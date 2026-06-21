@@ -1,0 +1,2565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ShopWise AI - India's Smartest Quick Commerce Aggregator</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="ShopWise AI brings Blinkit, Zepto, Swiggy Instamart, BigBasket, and JioMart under one roof. Compare prices, optimize your cart, and find the cheapest or fastest grocery delivery in Mumbai instantly.">
+  <meta name="keywords" content="quick commerce, price aggregator, blinkit, zepto, instamart, jiomart, price comparison india, grocery aggregator">
+  <meta name="author" content="ShopWise AI Team">
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Google Fonts: Outfit (Bold display), Playfair Display (Serif), Inter (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            peach: '#FF5A36',
+            peachHover: '#E04A27',
+            sage: '#4D7C5E',
+            plum: '#5C3D8C',
+            cream: '#FAF6F0',
+            charcoal: '#0A0A0A',
+            creamBg: '#FCFAF7'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Outfit', 'Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif']
+          },
+          boxShadow: {
+            brutalist: '6px 6px 0px #0A0A0A',
+            'brutalist-lg': '10px 10px 0px #0A0A0A',
+            'brutalist-sm': '3px 3px 0px #0A0A0A',
+            'brutalist-hover': '2px 2px 0px #0A0A0A'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Neo-Brutalist scrollbar and core styling */
+    :root {
+      -webkit-tap-highlight-color: transparent;
+      scrollbar-width: thin;
+      scrollbar-color: #0A0A0A #FAF6F0;
+    }
+    
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF6F0;
+      border-left: 3px solid #0A0A0A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #0A0A0A;
+      border: 2px solid #FAF6F0;
+    }
+
+    body {
+      background-color: #FAF6F0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .font-italic {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+    }
+
+    /* Sweep animation for live feed scanner laser */
+    @keyframes laser-sweep {
+      0% { top: 0%; opacity: 0.8; }
+      50% { top: 100%; opacity: 1; }
+      100% { top: 0%; opacity: 0.8; }
+    }
+    .scanner-laser {
+      animation: laser-sweep 2s ease-in-out infinite;
+    }
+
+    /* Infinite horizontal marquee text */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      animation: marquee 20s linear infinite;
+    }
+    .marquee-track-reverse {
+      animation: marquee 20s linear infinite reverse;
+    }
+
+    /* Scale bounce on cart modification */
+    @keyframes bounce-brutalist {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1) translateY(-2px); }
+    }
+    .animate-bump {
+      animation: bounce-brutalist 0.3s ease-out;
+    }
+
+    /* Noise overlay texture */
+    .bg-noise {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3 PreservingAspectRatio='none'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+  </style>
+
+  <!-- React, ReactDOM, and Babel Stable CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+</head>
+<body class="text-charcoal select-none bg-noise">
+
+  <!-- Root React App Container -->
+  <div id="root"></div>
+
+  <!-- React Code -->
+  <script type="text/babel">
+    const { useState, useEffect, useMemo, useRef } = React;
+
+    // --- BRUTALIST SVG ICON MODULE ---
+    const Icons = {
+      Home: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+      Search: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+      ShoppingCart: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>,
+      User: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
+      Heart: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+      Plus: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M5 12h14"/><path d="M12 5v14"/></svg>,
+      Minus: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M5 12h14"/></svg>,
+      Zap: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ArrowRight: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
+      Check: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="20 6 9 17 4 12"/></svg>,
+      X: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
+      ChevronDown: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m6 9 6 6 6-6"/></svg>,
+      ChevronRight: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m9 18 6-6-6-6"/></svg>,
+      Store: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m2 7 4.4-4c.3-.3.8-.5 1.2-.5h8.8c.4 0 .9.2 1.2.5L22 7"/><path d="M9 12v8"/><path d="M20 20V12"/><path d="M4 20V12"/><path d="M15 12v8"/><path d="M2 7v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7"/><path d="M2 17h20"/></svg>,
+      Database: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>,
+      Tag: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><path d="M7 7h.01"/></svg>,
+      Award: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="8" r="7"/><path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg>,
+      Bell: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>,
+      Settings: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
+      AlertCircle: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+      Sparkles: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5 5 3Z"/></svg>,
+      Play: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    };
+
+    // --- MOCK PRODUCT CATALOG ---
+    const PRODUCT_CATALOG = [
+      {
+        id: 1,
+        name: "Amul Butter (Pasteurized)",
+        brand: "Amul",
+        category: "dairy",
+        quantity: "500g Pack",
+        price: 245,
+        mrp: 275,
+        discount: "10% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&auto=format&fit=crop&q=60",
+        description: "Classic salted pasteurized butter. Loved across India for its delicious creamy flavor.",
+        specs: { Origin: "India (Gujarat)", "Shelf Life": "6 Months", Nutritional: "720 kcal/100g" }
+      },
+      {
+        id: 2,
+        name: "Hass Avocado (Imported)",
+        brand: "Organic Farms",
+        category: "fruits",
+        quantity: "1 pc (approx. 200g)",
+        price: 189,
+        mrp: 249,
+        discount: "24% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=60",
+        description: "Rich, creamy, and loaded with healthy monounsaturated fats. Perfectly ripe and ready-to-eat.",
+        specs: { Origin: "Mexico/New Zealand", "Shelf Life": "3 Days", Nutritional: "160 kcal, 15g Fat" }
+      },
+      {
+        id: 3,
+        name: "Premium Bananas (Robusta)",
+        brand: "Zespri Co",
+        category: "fruits",
+        quantity: "500g (3-4 pcs)",
+        price: 39,
+        mrp: 55,
+        discount: "29% OFF",
+        eta: "10 MINS",
+        image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&auto=format&fit=crop&q=60",
+        description: "Fresh Robusta bananas sourced directly from certified organic growers in Maharashtra. Excellent source of potassium.",
+        specs: { Origin: "India (Maharashtra)", "Shelf Life": "4 Days", Nutritional: "89 kcal, 22g Carbs" }
+      },
+      {
+        id: 4,
+        name: "Organic Whole Milk (Pasteurized)",
+        brand: "Pride of Cows",
+        category: "dairy",
+        quantity: "1 Litre",
+        price: 82,
+        mrp: 95,
+        discount: "13% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=60",
+        description: "Single-source farm fresh milk with no hormones or preservatives. Pasteurized and homogenized for rich taste.",
+        specs: { Origin: "India (Pune)", "Shelf Life": "2 Days", Nutritional: "62 kcal, 3.2g Protein" }
+      },
+      {
+        id: 5,
+        name: "Greek Yogurt (Blueberry)",
+        brand: "Epigamia",
+        category: "dairy",
+        quantity: "90g Tub",
+        price: 45,
+        mrp: 50,
+        discount: "10% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&auto=format&fit=crop&q=60",
+        description: "Thick, strained Greek yogurt layered with real blueberry pulp. High protein and low fat snack.",
+        specs: { Origin: "India", "Shelf Life": "12 Days", Nutritional: "95 kcal, 6g Protein" }
+      },
+      {
+        id: 6,
+        name: "Artisanal Sourdough Bread",
+        brand: "The Baker's Dozen",
+        category: "dairy",
+        quantity: "400g Loaf",
+        price: 110,
+        mrp: 140,
+        discount: "21% OFF",
+        eta: "12 MINS",
+        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=60",
+        description: "Naturally fermented sourdough bread made from 100% whole wheat. Crusty exterior with soft, airy crumbs.",
+        specs: { Origin: "Local Bakery", "Shelf Life": "3 Days", Nutritional: "220 kcal, 8g Protein" }
+      },
+      {
+        id: 7,
+        name: "Kettle Cooked Potato Chips (Sea Salt)",
+        brand: "The Green Snack Co",
+        category: "munchies",
+        quantity: "135g Pack",
+        price: 75,
+        mrp: 99,
+        discount: "24% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=60",
+        description: "Thick-cut kettle cooked potato chips seasoned with fine Mediterranean sea salt. Trans-fat free.",
+        specs: { Origin: "India", "Shelf Life": "6 Months", Nutritional: "150 kcal, 8g Fat" }
+      },
+      {
+        id: 8,
+        name: "Cold Brew Coffee (Bold Caramel)",
+        brand: "Sleepy Owl",
+        category: "munchies",
+        quantity: "250ml Can",
+        price: 99,
+        mrp: 125,
+        discount: "20% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&auto=format&fit=crop&q=60",
+        description: "100% Arabica coffee beans brewed slowly for 18 hours. Smooth, chocolatey body with sweet caramel finish.",
+        specs: { Origin: "India (Chikmagalur)", "Shelf Life": "9 Months", Nutritional: "45 kcal, 0g Sugar" }
+      }
+    ];
+
+    const COMPETITORS = {
+      blinkit: { name: "Blinkit", baseMultiplier: 1.02, coupon: "BLINK10", couponDiscountPercent: 10, etaMin: 10, etaMax: 15 },
+      zepto: { name: "Zepto", baseMultiplier: 0.98, coupon: "ZEPTOSAVE", couponDiscountPercent: 12, etaMin: 8, etaMax: 12 },
+      instamart: { name: "Swiggy Instamart", baseMultiplier: 1.05, coupon: "INSTA20", couponDiscountPercent: 15, etaMin: 12, etaMax: 18 },
+      jiomart: { name: "JioMart", baseMultiplier: 0.88, coupon: "JIOMART5", couponDiscountPercent: 5, etaMin: 20, etaMax: 35 }
+    };
+
+    const getCompetitorDetails = (product, competitorId, multiplierConfig = {}) => {
+      const config = COMPETITORS[competitorId];
+      const mult = multiplierConfig[competitorId] || config.baseMultiplier;
+      
+      const rawPrice = Math.round(product.price * mult);
+      const couponPercent = config.couponDiscountPercent;
+      const finalPrice = Math.round(rawPrice * (1 - couponPercent / 100));
+      
+      return {
+        store: config.name,
+        price: rawPrice,
+        coupon: config.coupon,
+        couponDiscountPercent: couponPercent,
+        eta: `${Math.round(parseInt(product.eta) * (config.etaMin / 8))} mins`,
+        finalPrice: finalPrice,
+        deliveryMinutes: Math.round(parseInt(product.eta) * (config.etaMin / 8))
+      };
+    };
+
+    // --- MAIN APP ---
+    function App() {
+      // Router view state
+      const [view, setView] = useState('landing'); // 'landing' | 'app-home' | 'app-dashboard' | 'app-admin' | 'app-checkout'
+      const [selectedCategory, setSelectedCategory] = useState('all');
+      const [searchQuery, setSearchQuery] = useState('');
+      const [isSearchFocused, setIsSearchFocused] = useState(false);
+      
+      // Database & overrides
+      const [catalog, setCatalog] = useState(PRODUCT_CATALOG);
+      const [competitorMultipliers, setCompetitorMultipliers] = useState({
+        blinkit: COMPETITORS.blinkit.baseMultiplier,
+        zepto: COMPETITORS.zepto.baseMultiplier,
+        instamart: COMPETITORS.instamart.baseMultiplier,
+        jiomart: COMPETITORS.jiomart.baseMultiplier
+      });
+
+      // User state
+      const [cart, setCart] = useState([]);
+      const [wishlist, setWishlist] = useState([]);
+      const [selectedProduct, setSelectedProduct] = useState(null);
+      const [compareProduct, setCompareProduct] = useState(null);
+      
+      // Global cart animations and triggers
+      const [cartBounce, setCartBounce] = useState(false);
+      const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+      const [cartStrategy, setCartStrategy] = useState('balanced'); // 'balanced' | 'cheapest' | 'fastest'
+      
+      // Address Selection
+      const [addresses, setAddresses] = useState([
+        { id: 1, label: "Home", text: "Flat 402, Skyline Heights, BKC West, Mumbai - 400001", active: true },
+        { id: 2, label: "Office", text: "WeWork BKC, bkCG Block, Bandra East, Mumbai - 400051", active: false }
+      ]);
+      const [addressPickerOpen, setAddressPickerOpen] = useState(false);
+
+      // Dashboard stats
+      const [lifetimeSavings, setLifetimeSavings] = useState(482.40);
+      const [priceAlerts, setPriceAlerts] = useState([
+        { id: 1, productName: "Amul Butter (Pasteurized)", targetPrice: 230, currentPrice: 245 },
+        { id: 2, productName: "Hass Avocado (Imported)", targetPrice: 170, currentPrice: 189 }
+      ]);
+      const [orders, setOrders] = useState(() => {
+        const local = localStorage.getItem('shopwise_orders_brutalist');
+        return local ? JSON.parse(local) : [
+          { id: "SW-8812", date: "21 Jun 2026", itemsCount: 3, total: 372, savings: 84, status: "Delivered", eta: "Delivered" },
+          { id: "SW-5421", date: "16 Jun 2026", itemsCount: 1, total: 245, savings: 30, status: "Delivered", eta: "Delivered" }
+        ];
+      });
+
+      useEffect(() => {
+        localStorage.setItem('shopwise_orders_brutalist', JSON.stringify(orders));
+      }, [orders]);
+
+      // Notification feedback
+      const [notification, setNotification] = useState(null);
+      const showNotification = (msg) => {
+        setNotification(msg);
+        setTimeout(() => setNotification(null), 3000);
+      };
+
+      const activeAddress = addresses.find(a => a.active) || addresses[0];
+
+      // --- ADD/REMOVE ACTIONS ---
+      const handleAddToCart = (product) => {
+        setCart(prevCart => {
+          const existing = prevCart.find(item => item.product.id === product.id);
+          if (existing) {
+            return prevCart.map(item =>
+              item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+            );
+          }
+          return [...prevCart, { product, quantity: 1 }];
+        });
+        setCartBounce(true);
+        setTimeout(() => setCartBounce(false), 500);
+        showNotification(`${product.name} added to cart!`);
+      };
+
+      const handleRemoveFromCart = (product) => {
+        setCart(prevCart => {
+          const existing = prevCart.find(item => item.product.id === product.id);
+          if (!existing) return prevCart;
+          if (existing.quantity === 1) {
+            return prevCart.filter(item => item.product.id !== product.id);
+          }
+          return prevCart.map(item =>
+            item.product.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
+          );
+        });
+      };
+
+      const handleClearCart = () => {
+        setCart([]);
+        showNotification("Cart cleared");
+      };
+
+      const handleToggleWishlist = (productId) => {
+        setWishlist(prev => {
+          const updated = prev.includes(productId) 
+            ? prev.filter(id => id !== productId)
+            : [...prev, productId];
+          const prodName = catalog.find(p => p.id === productId)?.name;
+          showNotification(prev.includes(productId) ? `${prodName} removed from saved` : `${prodName} saved!`);
+          return updated;
+        });
+      };
+
+      // --- CALCULATIONS FOR AI SMART CART ---
+      const cartCalculations = useMemo(() => {
+        if (cart.length === 0) return { balanced: null, cheapest: null, fastest: null };
+
+        let balancedItems = [], balancedTotal = 0, balancedOriginalTotal = 0, balancedETAs = [];
+        let cheapestItems = [], cheapestTotal = 0;
+        let fastestItems = [], fastestTotal = 0;
+
+        cart.forEach(({ product, quantity }) => {
+          balancedOriginalTotal += product.mrp * quantity;
+
+          const bl = getCompetitorDetails(product, 'blinkit', competitorMultipliers);
+          const zp = getCompetitorDetails(product, 'zepto', competitorMultipliers);
+          const im = getCompetitorDetails(product, 'instamart', competitorMultipliers);
+          const jm = getCompetitorDetails(product, 'jiomart', competitorMultipliers);
+
+          const choices = [
+            { store: 'ShopWise AI', price: product.price, eta: parseInt(product.eta) },
+            { store: 'Blinkit', price: bl.finalPrice, eta: bl.deliveryMinutes },
+            { store: 'Zepto', price: zp.finalPrice, eta: zp.deliveryMinutes },
+            { store: 'Swiggy Instamart', price: im.finalPrice, eta: im.deliveryMinutes },
+            { store: 'JioMart', price: jm.finalPrice, eta: jm.deliveryMinutes }
+          ];
+          
+          // cheapest Choice
+          const cheapestChoice = [...choices].sort((a,b) => a.price - b.price)[0];
+          cheapestItems.push({ product, quantity, sourcedFrom: cheapestChoice.store, finalUnit: cheapestChoice.price });
+          cheapestTotal += cheapestChoice.price * quantity;
+
+          // fastest Choice
+          const fastestChoice = [...choices].sort((a,b) => a.eta - b.eta)[0];
+          fastestItems.push({ product, quantity, sourcedFrom: fastestChoice.store, finalUnit: fastestChoice.price });
+          fastestTotal += fastestChoice.price * quantity;
+
+          // Balanced Choice (ShopWise AI or best candidate)
+          let balancedChoice = choices[0]; // ShopWise default
+          const bestComp = [bl, zp, im, jm].sort((a,b) => a.finalPrice - b.finalPrice)[0];
+          if (bestComp.finalPrice < product.price * 0.85 && bestComp.deliveryMinutes <= 15) {
+            balancedChoice = { store: bestComp.store, price: bestComp.finalPrice, eta: bestComp.deliveryMinutes };
+          }
+          
+          balancedItems.push({ product, quantity, sourcedFrom: balancedChoice.store, finalUnit: balancedChoice.price });
+          balancedTotal += balancedChoice.price * quantity;
+          balancedETAs.push(balancedChoice.eta);
+        });
+
+        const balancedMaxEta = Math.max(...balancedETAs, 10);
+        const cheapestMaxEta = Math.max(28, ...cart.map(i => parseInt(i.product.eta) * 3));
+        const fastestMaxEta = Math.min(8, ...cart.map(i => parseInt(i.product.eta)));
+
+        return {
+          balanced: {
+            items: balancedItems,
+            totalPrice: balancedTotal,
+            saving: Math.max(0, balancedOriginalTotal - balancedTotal),
+            eta: `${balancedMaxEta} MINS`,
+            description: "Maximum package savings while keeping checkout in a single quick delivery.",
+            deliveriesCount: 1,
+            shippingFee: balancedTotal > 299 ? 0 : 25
+          },
+          cheapest: {
+            items: cheapestItems,
+            totalPrice: cheapestTotal,
+            saving: Math.max(0, balancedOriginalTotal - cheapestTotal),
+            eta: `${Math.round(cheapestMaxEta)} MINS`,
+            description: "Sourced item-by-item from the absolute lowest price stores. May result in split arrivals.",
+            deliveriesCount: 2,
+            shippingFee: 35
+          },
+          fastest: {
+            items: fastestItems,
+            totalPrice: fastestTotal,
+            saving: Math.max(0, balancedOriginalTotal - fastestTotal),
+            eta: `${fastestMaxEta} MINS`,
+            description: "Prioritizes immediate micro-warehouse dispatch for lightning-fast arrival.",
+            deliveriesCount: 1,
+            shippingFee: 49
+          }
+        };
+      }, [cart, competitorMultipliers]);
+
+      const currentCartSummary = useMemo(() => {
+        if (!cartCalculations[cartStrategy]) return null;
+        return cartCalculations[cartStrategy];
+      }, [cartCalculations, cartStrategy]);
+
+      // Category filter catalog
+      const filteredProducts = useMemo(() => {
+        let result = catalog;
+        if (selectedCategory !== 'all') {
+          result = result.filter(p => p.category === selectedCategory);
+        }
+        if (searchQuery.trim() !== '') {
+          result = result.filter(p => 
+            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.brand.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        }
+        return result;
+      }, [catalog, selectedCategory, searchQuery]);
+
+      const searchSuggestions = useMemo(() => {
+        if (searchQuery.trim() === '') return [];
+        return catalog.filter(p => 
+          p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        ).slice(0, 5);
+      }, [catalog, searchQuery]);
+
+      return (
+        <div className="min-h-screen bg-cream flex flex-col items-center">
+          
+          {/* HEADER NAV BAR */}
+          <header className="w-full sticky top-0 bg-white border-b-4 border-charcoal z-40 shadow-[0_4px_0_#0A0A0A] transition-all">
+            <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+              
+              {/* Logo / Branding */}
+              <div 
+                onClick={() => { setView('landing'); setSelectedCategory('all'); setSearchQuery(''); }}
+                className="flex items-center gap-2.5 cursor-pointer"
+              >
+                <div className="w-11 h-11 rounded-xl bg-charcoal border-2 border-charcoal flex items-center justify-center hover:rotate-3 transition-transform overflow-hidden shadow-brutalist-sm">
+                  <img src="logo.png" className="w-full h-full object-cover scale-105" alt="ShopWise Logo" />
+                </div>
+                <div>
+                  <span className="font-display font-black text-xl tracking-tighter block leading-none">ShopWise</span>
+                  <span className="text-[10px] font-black text-sage uppercase tracking-widest leading-none">AI COMPARATOR</span>
+                </div>
+              </div>
+
+              {/* Location Select (App Views Only) */}
+              {view !== 'landing' && (
+                <div className="hidden md:flex items-center gap-2 cursor-pointer py-1.5 px-4 bg-cream border-2 border-charcoal rounded-full hover:bg-peach/10 hover:shadow-brutalist-sm transition-all" onClick={() => setAddressPickerOpen(true)}>
+                  <Icons.MapPin className="text-peach w-4 h-4 shrink-0" />
+                  <span className="text-xs font-black text-charcoal truncate max-w-[130px]">
+                    {activeAddress.label}
+                  </span>
+                  <Icons.ChevronDown className="w-3.5 h-3.5 text-charcoal" />
+                </div>
+              )}
+
+              {/* Search Bar Container */}
+              {view !== 'landing' && (
+                <div className="flex-1 max-w-md relative">
+                  <div className="relative border-2 border-charcoal rounded-2xl overflow-hidden shadow-brutalist-sm focus-within:shadow-brutalist transition-all">
+                    <Icons.Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-charcoal" />
+                    <input
+                      type="text"
+                      placeholder="Search Amul butter, fresh avocados, whole milk..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onFocus={() => setIsSearchFocused(true)}
+                      onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                      className="w-full pl-11 pr-4 py-2.5 bg-white text-charcoal text-xs font-semibold focus:outline-none placeholder-gray-500"
+                    />
+                    {searchQuery && (
+                      <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-charcoal hover:text-peach">
+                        <Icons.X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Suggestions Dropdown */}
+                  {isSearchFocused && searchSuggestions.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border-4 border-charcoal shadow-brutalist overflow-hidden z-50 animate-pop-in">
+                      <div className="p-2 border-b-2 border-charcoal bg-cream text-[10px] font-black text-charcoal uppercase tracking-widest px-4">
+                        Instant Matches
+                      </div>
+                      {searchSuggestions.map(p => (
+                        <div
+                          key={p.id}
+                          onMouseDown={() => { setSelectedProduct(p); setSearchQuery(''); }}
+                          className="flex items-center gap-3 p-3 hover:bg-cream border-b-2 border-charcoal last:border-0 cursor-pointer transition-all"
+                        >
+                          <img src={p.image} className="w-10 h-10 object-cover rounded-lg border-2 border-charcoal shrink-0" alt={p.name} />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-black text-gray-500 uppercase leading-none">{p.brand}</p>
+                            <p className="text-xs font-extrabold text-charcoal truncate mt-0.5">{p.name}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs font-black text-charcoal">₹{p.price}</p>
+                            <span className="text-[9px] text-charcoal font-black bg-peach px-1.5 py-0.5 rounded-md border border-charcoal">{p.discount}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Navigation Anchors for Landing Page */}
+              {view === 'landing' && (
+                <div className="hidden lg:flex items-center gap-8">
+                  <a className="font-display text-sm font-black hover:text-peach uppercase tracking-tight transition-colors" href="#about">About</a>
+                  <a className="font-display text-sm font-black hover:text-peach uppercase tracking-tight transition-colors" href="#features">Features</a>
+                  <a className="font-display text-sm font-black hover:text-peach uppercase tracking-tight transition-colors" href="#scanner">Live Scanner</a>
+                  <a className="font-display text-sm font-black hover:text-peach uppercase tracking-tight transition-colors" href="#providers">Providers</a>
+                  <a className="font-display text-sm font-black hover:text-peach uppercase tracking-tight transition-colors" href="#founder">Founder</a>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2">
+                
+                {view !== 'landing' && (
+                  <>
+                    <button 
+                      onClick={() => setView('app-admin')}
+                      className={`p-2.5 rounded-xl border-2 border-charcoal transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] ${view === 'app-admin' ? 'bg-peach text-white shadow-brutalist-sm' : 'bg-white text-charcoal hover:bg-cream shadow-brutalist-sm'}`}
+                      title="Adjust Competitor Factors"
+                    >
+                      <Icons.Database className="w-4.5 h-4.5" />
+                    </button>
+
+                    <button 
+                      onClick={() => setView('app-dashboard')}
+                      className={`p-2.5 rounded-xl border-2 border-charcoal transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] ${view === 'app-dashboard' ? 'bg-peach text-white shadow-brutalist-sm' : 'bg-white text-charcoal hover:bg-cream shadow-brutalist-sm'}`}
+                    >
+                      <Icons.User className="w-4.5 h-4.5" />
+                    </button>
+                  </>
+                )}
+
+                {/* Main Launch / Cart Trigger */}
+                {view === 'landing' ? (
+                  <button
+                    onClick={() => setView('app-home')}
+                    className="px-5 py-2.5 rounded-xl bg-peach hover:bg-peachHover text-white font-display font-black text-xs uppercase tracking-tight border-2 border-charcoal shadow-brutalist hover:shadow-brutalist-hover hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                  >
+                    Launch Web App
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setCartDrawerOpen(true)}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl bg-charcoal text-white hover:bg-charcoal/90 border-2 border-charcoal transition-all ${cartBounce ? 'animate-bump' : ''} shadow-brutalist`}
+                  >
+                    <div className="relative">
+                      <Icons.ShoppingCart className="w-4.5 h-4.5 text-peach fill-peach" />
+                      {cart.length > 0 && (
+                        <span className="absolute -top-3 -right-3 bg-peach text-white text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 border-charcoal">
+                          {cart.reduce((acc, i) => acc + i.quantity, 0)}
+                        </span>
+                      )}
+                    </div>
+                    <span className="hidden md:inline text-xs font-black">
+                      {cart.length > 0 ? `₹${currentCartSummary?.totalPrice || 0}` : "Cart"}
+                    </span>
+                  </button>
+                )}
+
+              </div>
+
+            </div>
+          </header>
+
+          {/* NOTIFICATION TOAST */}
+          {notification && (
+            <div className="fixed top-20 right-4 left-4 md:left-auto md:w-80 bg-charcoal text-white px-4 py-3.5 rounded-2xl shadow-brutalist flex items-center gap-3 z-50 border-2 border-charcoal animate-pop-in">
+              <Icons.Sparkles className="w-5 h-5 text-peach shrink-0 fill-peach" />
+              <span className="text-xs font-extrabold">{notification}</span>
+            </div>
+          )}
+
+          {/* MAIN PAGE BODY ROUTER */}
+          <main className="flex-1 w-full flex flex-col items-center">
+            {view === 'landing' && (
+              <LandingView 
+                setView={setView} 
+                catalog={catalog} 
+                competitorMultipliers={competitorMultipliers} 
+              />
+            )}
+
+            {view === 'app-home' && (
+              <div className="w-full max-w-6xl px-4 py-8 space-y-8 pb-24 md:pb-12">
+                <AppHomeView 
+                  filteredProducts={filteredProducts}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                  handleAddToCart={handleAddToCart}
+                  handleRemoveFromCart={handleRemoveFromCart}
+                  wishlist={wishlist}
+                  handleToggleWishlist={handleToggleWishlist}
+                  cart={cart}
+                  setSelectedProduct={setSelectedProduct}
+                  setCompareProduct={setCompareProduct}
+                />
+              </div>
+            )}
+
+            {view === 'app-dashboard' && (
+              <div className="w-full max-w-6xl px-4 py-8 space-y-8 pb-24 md:pb-12">
+                <DashboardView 
+                  orders={orders}
+                  wishlist={wishlist}
+                  catalog={catalog}
+                  handleAddToCart={handleAddToCart}
+                  handleToggleWishlist={handleToggleWishlist}
+                  lifetimeSavings={lifetimeSavings}
+                  priceAlerts={priceAlerts}
+                  setPriceAlerts={setPriceAlerts}
+                  addresses={addresses}
+                  setAddresses={setAddresses}
+                  setView={setView}
+                />
+              </div>
+            )}
+
+            {view === 'app-admin' && (
+              <div className="w-full max-w-6xl px-4 py-8 space-y-8 pb-24 md:pb-12">
+                <AdminPanel 
+                  competitorMultipliers={competitorMultipliers}
+                  setCompetitorMultipliers={setCompetitorMultipliers}
+                  catalog={catalog}
+                  setCatalog={setCatalog}
+                  showNotification={showNotification}
+                />
+              </div>
+            )}
+
+            {view === 'app-checkout' && (
+              <div className="w-full max-w-6xl px-4 py-8 space-y-8 pb-24 md:pb-12">
+                <CheckoutView 
+                  cart={cart}
+                  currentCartSummary={currentCartSummary}
+                  cartStrategy={cartStrategy}
+                  addresses={addresses}
+                  setOrders={setOrders}
+                  setCart={setCart}
+                  setLifetimeSavings={setLifetimeSavings}
+                  setView={setView}
+                  showNotification={showNotification}
+                />
+              </div>
+            )}
+          </main>
+
+          {/* PRODUCT DETAIL MODAL */}
+          {selectedProduct && (
+            <ProductDetailModal 
+              product={selectedProduct}
+              onClose={() => setSelectedProduct(null)}
+              handleAddToCart={handleAddToCart}
+              handleRemoveFromCart={handleRemoveFromCart}
+              cart={cart}
+              wishlist={wishlist}
+              handleToggleWishlist={handleToggleWishlist}
+              setCompareProduct={setCompareProduct}
+              competitorMultipliers={competitorMultipliers}
+            />
+          )}
+
+          {/* COMPARISON DRAWER */}
+          {compareProduct && (
+            <ComparisonDrawer 
+              product={compareProduct}
+              onClose={() => setCompareProduct(null)}
+              competitorMultipliers={competitorMultipliers}
+              handleAddToCart={handleAddToCart}
+              cart={cart}
+              setCartStrategy={setCartStrategy}
+              setCartDrawerOpen={setCartDrawerOpen}
+            />
+          )}
+
+          {/* SMART CART AI DRAWER */}
+          {cartDrawerOpen && (
+            <SmartCartDrawer 
+              cart={cart}
+              onClose={() => setCartDrawerOpen(false)}
+              cartCalculations={cartCalculations}
+              cartStrategy={cartStrategy}
+              setCartStrategy={setCartStrategy}
+              handleAddToCart={handleAddToCart}
+              handleRemoveFromCart={handleRemoveFromCart}
+              handleClearCart={handleClearCart}
+              setView={setView}
+            />
+          )}
+
+          {/* ADDRESS PICKER MODAL */}
+          {addressPickerOpen && (
+            <AddressPickerModal 
+              addresses={addresses}
+              setAddresses={setAddresses}
+              onClose={() => setAddressPickerOpen(false)}
+            />
+          )}
+
+          {/* MOBILE BOTTOM NAVIGATION */}
+          {view !== 'landing' && (
+            <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-4 border-charcoal py-2 px-6 flex items-center justify-between md:hidden z-30 shadow-[0_-4px_0_#0A0A0A]">
+              <button 
+                onClick={() => { setView('app-home'); setSelectedCategory('all'); }}
+                className={`flex flex-col items-center gap-1 flex-1 py-1 ${view === 'app-home' && selectedCategory === 'all' ? 'text-peach' : 'text-gray-500'}`}
+              >
+                <Icons.Home className="w-5.5 h-5.5" />
+                <span className="text-[10px] font-black uppercase">Home</span>
+              </button>
+              <button 
+                onClick={() => { setView('app-home'); setSelectedCategory('dairy'); }}
+                className={`flex flex-col items-center gap-1 flex-1 py-1 ${view === 'app-home' && selectedCategory !== 'all' ? 'text-peach' : 'text-gray-500'}`}
+              >
+                <Icons.Tag className="w-5.5 h-5.5" />
+                <span className="text-[10px] font-black uppercase">Categories</span>
+              </button>
+              <button 
+                onClick={() => { setView('app-dashboard'); }}
+                className={`flex flex-col items-center gap-1 flex-1 py-1 ${view === 'app-dashboard' ? 'text-peach' : 'text-gray-500'}`}
+              >
+                <Icons.User className="w-5.5 h-5.5" />
+                <span className="text-[10px] font-black uppercase">Dashboard</span>
+              </button>
+              <button 
+                onClick={() => { setView('app-admin'); }}
+                className={`flex flex-col items-center gap-1 flex-1 py-1 ${view === 'app-admin' ? 'text-peach' : 'text-gray-500'}`}
+              >
+                <Icons.Settings className="w-5.5 h-5.5" />
+                <span className="text-[10px] font-black uppercase">Admin</span>
+              </button>
+            </nav>
+          )}
+
+        </div>
+      );
+    }
+
+    // --- LANDING VIEW COMPONENT (Inspired by quickv.in) ---
+    function LandingView({ setView, catalog, competitorMultipliers }) {
+      return (
+        <div className="w-full flex flex-col items-center">
+          
+          {/* HERO SECTION */}
+          <section id="home" className="w-full pt-16 pb-24 px-4 md:px-8 max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden">
+            
+            {/* Background Big Decorative Text */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none z-0">
+              <h1 className="text-[20vw] font-black tracking-tighter leading-none whitespace-nowrap">SHOPWISE</h1>
+            </div>
+
+            {/* Left Column: Heading & Badges */}
+            <div className="flex-1 space-y-8 z-10 text-left">
+              <div className="inline-block px-5 py-2 bg-white text-peach shadow-brutalist-sm font-display text-xs md:text-sm font-black uppercase tracking-wider border-2 border-charcoal rounded-full transform -rotate-1">
+                {"India's Only Smart Cart Aggregator"}
+              </div>
+
+              <h1 className="text-5xl md:text-7xl font-black leading-[0.9] text-charcoal uppercase tracking-tight">
+                Every Store.<br/>
+                <span className="font-italic text-peach lowercase pr-3">one app.</span><br/>
+                <span className="relative inline-block text-charcoal">
+                  Real Savings.
+                  <span className="absolute bottom-1 left-0 w-full h-3 bg-sage/40 -z-10 rounded-full"></span>
+                </span>
+              </h1>
+
+              <p className="text-sm md:text-base font-semibold text-charcoal/80 max-w-xl leading-relaxed border-l-4 border-peach pl-6">
+                ShopWise aggregates Blinkit, Zepto, Swiggy Instamart, and JioMart under one roof. Compare prices, optimize carts, and checkout instantly.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <button
+                  onClick={() => setView('app-home')}
+                  className="px-8 py-4 bg-charcoal hover:bg-charcoal/90 text-white font-display font-black text-sm uppercase tracking-tight rounded-2xl border-2 border-charcoal shadow-brutalist hover:shadow-brutalist-hover hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-2"
+                >
+                  <Icons.Play className="w-4 h-4 text-peach fill-peach" />
+                  Launch Shopping Portal
+                </button>
+                
+                <a
+                  href="#scanner"
+                  className="px-8 py-4 bg-white hover:bg-cream text-charcoal font-display font-black text-sm uppercase tracking-tight rounded-2xl border-2 border-charcoal shadow-brutalist hover:shadow-brutalist-hover hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center"
+                >
+                  View Live Scanner
+                </a>
+              </div>
+            </div>
+
+            {/* Right Column: Phone Mockup Container */}
+            <div className="flex-1 max-w-sm w-full relative h-[450px] lg:h-[500px] flex justify-center items-center">
+              
+              {/* Phone Body */}
+              <div className="relative w-[230px] aspect-[1/2.05] shadow-brutalist-lg rounded-[42px] border-[6px] border-charcoal overflow-hidden bg-white hover:rotate-2 transition-transform duration-500">
+                <img 
+                  alt="ShopWise App UI Mockup" 
+                  className="w-full h-full object-cover" 
+                  src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop&q=60" 
+                />
+              </div>
+
+              {/* Float Badges */}
+              <div className="absolute top-1/4 -left-6 bg-sage text-white font-display font-black text-sm md:text-base px-5 py-2.5 shadow-brutalist rounded-[18px] border-2 border-charcoal uppercase tracking-tight">
+                CHEAPEST CART!
+              </div>
+
+              <div className="absolute bottom-1/4 -right-6 bg-plum text-white font-display font-black text-sm md:text-base px-5 py-2.5 shadow-brutalist rounded-[18px] border-2 border-charcoal uppercase tracking-tight">
+                Save ₹₹₹
+              </div>
+            </div>
+
+          </section>
+
+          {/* ABOUT SKEW CARDS */}
+          <section id="about" className="w-full py-20 px-4 md:px-8 border-y-4 border-charcoal bg-white flex flex-col items-center">
+            <div className="max-w-6xl w-full">
+              <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-8 border-b-4 border-charcoal pb-8">
+                <h2 className="text-4xl md:text-6xl font-black uppercase max-w-2xl leading-[0.9]">
+                  What is <br/>
+                  <span className="text-peach font-italic lowercase">ShopWise AI?</span>
+                </h2>
+                <p className="font-semibold text-lg max-w-md bg-sage text-white p-4 border-2 border-charcoal shadow-brutalist transform rotate-2">
+                  ShopWise AI is your ultimate quick-commerce companion, aggregating catalog inventories to fight daily inflation.
+                </p>
+              </div>
+
+              {/* Tilted cards list */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                {/* Card 1 */}
+                <div className="bg-peach text-white border-2 border-charcoal shadow-brutalist rounded-[20px] p-8 flex flex-col items-center text-center gap-6 transform md:-skew-x-3 hover:skew-x-0 transition-all duration-500">
+                  <div className="w-14 h-14 bg-charcoal text-white flex items-center justify-center rounded-xl text-xl font-black border-2 border-charcoal">
+                    1
+                  </div>
+                  <h3 className="font-display text-2xl font-black uppercase">What Makes It Better?</h3>
+                  <p className="text-xs font-semibold leading-relaxed opacity-95">
+                    We aggregate live inventories and compare checkout bundles from major platforms, matching coupons automatically.
+                  </p>
+                </div>
+
+                {/* Card 2 */}
+                <div className="bg-charcoal text-white border-2 border-charcoal shadow-brutalist rounded-[20px] p-8 flex flex-col items-center text-center gap-6 transform md:skew-x-3 hover:skew-x-0 transition-all duration-500">
+                  <div className="w-14 h-14 bg-peach text-white flex items-center justify-center rounded-xl text-xl font-black border-2 border-charcoal">
+                    2
+                  </div>
+                  <h3 className="font-display text-2xl font-black uppercase">How It Helps You?</h3>
+                  <p className="text-xs font-semibold leading-relaxed opacity-95">
+                    No need to open multiple apps manually. Instantly split or merge carts depending on whether price or speed is your priority.
+                  </p>
+                </div>
+
+                {/* Card 3 */}
+                <div className="bg-sage text-white border-2 border-charcoal shadow-brutalist rounded-[20px] p-8 flex flex-col items-center text-center gap-6 transform md:-skew-x-3 hover:skew-x-0 transition-all duration-500">
+                  <div className="w-14 h-14 bg-white text-charcoal flex items-center justify-center rounded-xl text-xl font-black border-2 border-charcoal">
+                    3
+                  </div>
+                  <h3 className="font-display text-2xl font-black uppercase">What to Expect?</h3>
+                  <p className="text-xs font-semibold leading-relaxed opacity-95">
+                    An completely transparent, secure, and free comparison gateway. No subscriptions, markup fees, or hidden markups.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+          {/* INTERACTIVE SCAN SIMULATOR */}
+          <section id="scanner" className="w-full py-20 px-4 bg-peach border-b-4 border-charcoal flex flex-col items-center">
+            <div className="max-w-4xl w-full text-center space-y-12">
+              <div className="space-y-4">
+                <span className="inline-flex items-center gap-2 px-5 py-1.5 bg-charcoal text-peach font-display font-black text-xs tracking-widest uppercase border-2 border-charcoal shadow-brutalist-sm transform -rotate-1">
+                  <span className="relative flex h-3.5 w-3.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-peach opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-peach"></span>
+                  </span>
+                  LIVE COMPARATOR PORTAL
+                </span>
+                <h2 className="text-4xl md:text-6xl font-black uppercase text-white drop-shadow-[2px_2px_0_#0A0A0A]">
+                  See the difference.
+                </h2>
+                <p className="text-xs md:text-sm font-semibold text-charcoal max-w-lg mx-auto">
+                  {"Select a product below to trigger a live scanning simulation across Mumbai's dark stores."}
+                </p>
+              </div>
+
+              <LiveScannerSimulator catalog={catalog} competitorMultipliers={competitorMultipliers} />
+            </div>
+          </section>
+
+          {/* PROVIDERS INFINITE MARQUEE TICKER */}
+          <section id="providers" className="w-full py-10 bg-white border-b-4 border-charcoal overflow-hidden flex flex-col gap-4 relative">
+            
+            {/* Ticker Row 1 */}
+            <div className="w-full flex whitespace-nowrap overflow-hidden">
+              <div className="marquee-track flex gap-6 text-charcoal">
+                {[...Array(3)].map((_, idx) => (
+                  <React.Fragment key={idx}>
+                    {Object.values(COMPETITORS).map(comp => (
+                      <div key={comp.name} className="px-8 py-3 bg-cream border-2 border-charcoal rounded-full shadow-brutalist-sm text-sm font-black uppercase tracking-tight flex items-center justify-center">
+                        {comp.name}
+                      </div>
+                    ))}
+                    <div className="px-8 py-3 bg-cream border-2 border-charcoal rounded-full shadow-brutalist-sm text-sm font-black uppercase tracking-tight flex items-center justify-center">
+                      Flipkart Minutes
+                    </div>
+                    <div className="px-8 py-3 bg-cream border-2 border-charcoal rounded-full shadow-brutalist-sm text-sm font-black uppercase tracking-tight flex items-center justify-center">
+                      JioMart Express
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+
+            {/* Ticker Row 2 (Reverse) */}
+            <div className="w-full flex whitespace-nowrap overflow-hidden">
+              <div className="marquee-track-reverse flex gap-6 text-white">
+                {[...Array(3)].map((_, idx) => (
+                  <React.Fragment key={idx}>
+                    {Object.values(COMPETITORS).map(comp => (
+                      <div key={comp.name} className="px-8 py-3 bg-charcoal border-2 border-charcoal rounded-full shadow-brutalist-sm text-sm font-black uppercase tracking-tight flex items-center justify-center">
+                        {comp.name}
+                      </div>
+                    ))}
+                    <div className="px-8 py-3 bg-charcoal border-2 border-charcoal rounded-full shadow-brutalist-sm text-sm font-black uppercase tracking-tight flex items-center justify-center">
+                      Flipkart Minutes
+                    </div>
+                    <div className="px-8 py-3 bg-charcoal border-2 border-charcoal rounded-full shadow-brutalist-sm text-sm font-black uppercase tracking-tight flex items-center justify-center">
+                      JioMart Express
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+
+          </section>
+
+          {/* SMART FEATURES GRID */}
+          <section id="features" className="w-full py-20 px-4 md:px-8 max-w-6xl">
+            <h2 className="text-4xl md:text-5xl font-black text-center uppercase mb-16 tracking-tight">
+              Bringing the <span className="text-peach">Smartest</span> Sourcing Grid
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              
+              <div className="p-8 rounded-[24px] border-2 border-charcoal bg-peach text-white shadow-brutalist group">
+                <div className="text-4xl font-black opacity-30 mb-4">01</div>
+                <h3 className="text-2xl font-black uppercase mb-2">Real-Time Price Sync</h3>
+                <p className="text-xs font-semibold leading-relaxed opacity-95">
+                  We check catalogs across all local dark stores continuously, displaying true prices instantly.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-[24px] border-2 border-charcoal bg-sage text-white shadow-brutalist group">
+                <div className="text-4xl font-black opacity-30 mb-4">02</div>
+                <h3 className="text-2xl font-black uppercase mb-2">Smart Cart Optimizer</h3>
+                <p className="text-xs font-semibold leading-relaxed opacity-95">
+                  Simulates combinations of checkout stores for your products, generating cheapest, fastest, or balanced carts.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-[24px] border-2 border-charcoal bg-plum text-white shadow-brutalist group">
+                <div className="text-4xl font-black opacity-30 mb-4">03</div>
+                <h3 className="text-2xl font-black uppercase mb-2">Coupon-Aware Quotes</h3>
+                <p className="text-xs font-semibold leading-relaxed opacity-95">
+                  Factors in delivery charges, active store promo codes, and pack discounts for total bill accuracy.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-[24px] border-2 border-charcoal bg-charcoal text-white shadow-brutalist group">
+                <div className="text-4xl font-black opacity-30 mb-4">04</div>
+                <h3 className="text-2xl font-black uppercase mb-2">Privacy Sourced</h3>
+                <p className="text-xs font-semibold leading-relaxed opacity-95">
+                  No payment details required. We generate shopping strategy lists that guide you directly to checkout.
+                </p>
+              </div>
+
+            </div>
+          </section>
+
+          {/* FOUNDER PROFILE SECTION */}
+          <section id="founder" className="w-full py-20 px-4 md:px-8 border-t-4 border-charcoal bg-cream flex justify-center">
+            <div className="max-w-6xl w-full flex flex-col lg:flex-row items-center justify-between gap-12">
+              
+              {/* Left Column: Avatar frame */}
+              <div className="flex-1 max-w-sm w-full relative">
+                <div className="aspect-square bg-white rounded-[32px] border-4 border-charcoal shadow-brutalist overflow-hidden transform -rotate-2 hover:rotate-0 transition-transform duration-500 relative group flex items-center justify-center">
+                  <img 
+                    src="founder.jpg" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    alt="Anshu Sharma" 
+                  />
+                  <div className="absolute bottom-4 left-4 right-4 bg-charcoal text-white border-2 border-charcoal py-2.5 px-4 rounded-xl text-center shadow-brutalist-sm">
+                    <span className="font-display font-black text-xs uppercase text-peach tracking-wide">Anshu Sharma</span>
+                  </div>
+                </div>
+                {/* Float Badges */}
+                <div className="absolute -top-4 -right-4 bg-sage text-white font-display font-black text-xs px-4 py-1.5 shadow-brutalist rounded-xl border-2 border-charcoal uppercase tracking-tight transform rotate-6">
+                  19 y/o Dropout 🎓
+                </div>
+                <div className="absolute -bottom-4 -left-4 bg-plum text-white font-display font-black text-xs px-4 py-1.5 shadow-brutalist rounded-xl border-2 border-charcoal uppercase tracking-tight transform -rotate-6">
+                  AI Enthusiast 🤖
+                </div>
+              </div>
+
+              {/* Right Column: Bio & Info */}
+              <div className="flex-1 space-y-6 text-left">
+                <span className="inline-block px-5 py-2 bg-white text-peach shadow-brutalist-sm font-display text-xs md:text-sm font-black uppercase tracking-wider border-2 border-charcoal rounded-full transform -rotate-1">
+                  Behind the Code
+                </span>
+                <h2 className="text-4xl md:text-6xl font-black uppercase leading-[0.9] text-charcoal">
+                  Solving Real Life<br/>
+                  <span className="font-italic text-peach lowercase pr-3">problems.</span>
+                </h2>
+                <div className="space-y-4 font-semibold text-charcoal/80 text-sm md:text-base leading-relaxed border-l-4 border-peach pl-6">
+                  <p>
+                    I am <strong>Anshu Sharma</strong>, a 19-year-old college dropout, AI enthusiast, and problem solver. I believe in learning new things daily and building technology that solves direct, real-world issues.
+                  </p>
+                  <p>
+                    Quick commerce is convenient, but prices fluctuate constantly. ShopWise AI is my attempt to build a transparent, frictionless comparison system that gives power back to consumers across India.
+                  </p>
+                </div>
+                
+                <div className="flex flex-wrap items-center gap-3">
+                  <a 
+                    href="https://www.instagram.com/anshuuu__002/?utm_source=ig_web_button_share_sheet" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center gap-2 px-4 py-2 bg-[#E1306C] hover:bg-[#C13584] text-white border-2 border-charcoal rounded-xl shadow-brutalist-sm hover:translate-y-[1px] transition-all text-xs font-black"
+                  >
+                    <span>📸 @anshuuu__002</span>
+                  </a>
+                  <a 
+                    href="mailto:anshusharma9608@gmail.com" 
+                    className="flex items-center gap-2 px-4 py-2 bg-charcoal hover:bg-charcoal/90 text-white border-2 border-charcoal rounded-xl shadow-brutalist-sm hover:translate-y-[1px] transition-all text-xs font-black"
+                  >
+                    <span>📧 anshusharma9608@gmail.com</span>
+                  </a>
+                </div>
+
+                <div className="bg-white border-2 border-charcoal p-4 rounded-2xl shadow-brutalist-sm text-xs font-black text-sage uppercase tracking-wider inline-block">
+                  🚀 Ship Fast • Solve Real Problems • Learn Daily
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          {/* STOP OVERPAYING BANNER */}
+          <section className="w-full py-20 px-4 md:px-8 border-t-4 border-charcoal bg-charcoal text-white flex justify-center">
+            <div className="max-w-4xl w-full flex flex-col md:flex-row items-center justify-between gap-12 p-8 md:p-16 border-4 border-white shadow-[10px_10px_0_#FFF] rounded-[24px] transform rotate-1 bg-charcoal">
+              <div className="space-y-4 text-left">
+                <h2 className="text-4xl md:text-6xl font-black uppercase leading-none">
+                  Stop<br/>
+                  <span className="font-italic text-peach pr-3 lowercase">overpaying.</span>
+                </h2>
+                <p className="text-xs md:text-sm font-semibold text-gray-300">
+                  Join thousands of smart shoppers in BKC, Mumbai optimizing their grocery baskets.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setView('app-home')}
+                className="w-full md:w-auto px-8 py-4 bg-peach hover:bg-peachHover text-white font-display font-black text-sm uppercase tracking-tight rounded-xl border-2 border-charcoal shadow-brutalist shadow-white hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                Launch Portal Now
+              </button>
+            </div>
+          </section>
+
+          {/* FOOTER */}
+          <footer className="w-full bg-white border-t-4 border-charcoal py-8 text-center text-xs font-bold text-gray-500">
+            <p>© 2026 ShopWise AI Aggregator. Created with premium Neo-Brutalist designs.</p>
+          </footer>
+
+        </div>
+      );
+    }
+
+    // --- INTERACTIVE LIVE SCANNER SIMULATOR ---
+    function LiveScannerSimulator({ catalog, competitorMultipliers }) {
+      const [selectedId, setSelectedId] = useState(1);
+      const [isScanning, setIsScanning] = useState(false);
+      const [scanFinished, setScanFinished] = useState(true);
+
+      const activeProduct = catalog.find(p => p.id === selectedId) || catalog[0];
+
+      // Generate rates list
+      const comparisonList = useMemo(() => {
+        const bl = getCompetitorDetails(activeProduct, 'blinkit', competitorMultipliers);
+        const zp = getCompetitorDetails(activeProduct, 'zepto', competitorMultipliers);
+        const im = getCompetitorDetails(activeProduct, 'instamart', competitorMultipliers);
+        const jm = getCompetitorDetails(activeProduct, 'jiomart', competitorMultipliers);
+
+        return [
+          { store: 'Blinkit', price: bl.finalPrice, eta: bl.eta },
+          { store: 'Zepto', price: zp.finalPrice, eta: zp.eta },
+          { store: 'Swiggy Instamart', price: im.finalPrice, eta: im.eta },
+          { store: 'JioMart', price: jm.finalPrice, eta: jm.eta }
+        ].sort((a,b) => a.price - b.price);
+      }, [activeProduct, competitorMultipliers]);
+
+      const winner = comparisonList[0];
+
+      const triggerScan = () => {
+        if (isScanning) return;
+        setIsScanning(true);
+        setScanFinished(false);
+        setTimeout(() => {
+          setIsScanning(false);
+          setScanFinished(true);
+        }, 1800);
+      };
+
+      return (
+        <div className="bg-white border-4 border-charcoal rounded-3xl p-5 md:p-8 max-w-xl mx-auto shadow-brutalist-lg relative text-left">
+          
+          {/* Scanner Selector */}
+          <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mb-6 pb-4 border-b-2 border-charcoal">
+            <div>
+              <span className="text-[10px] font-black text-gray-400 uppercase">Target Item</span>
+              <select
+                value={selectedId}
+                onChange={(e) => { setSelectedId(parseInt(e.target.value)); setScanFinished(false); }}
+                className="w-full mt-1 bg-cream border-2 border-charcoal px-3 py-2 rounded-xl text-xs font-black focus:outline-none"
+              >
+                {catalog.map(p => (
+                  <option key={p.id} value={p.id}>{p.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              onClick={triggerScan}
+              disabled={isScanning}
+              className="w-full sm:w-auto px-5 py-3 bg-charcoal text-white hover:bg-charcoal/90 rounded-xl text-xs font-black border-2 border-charcoal shadow-brutalist-sm hover:translate-x-[1px] hover:translate-y-[1px] transition-all self-end"
+            >
+              {isScanning ? "Scanning..." : "Initiate Live Scan"}
+            </button>
+          </div>
+
+          {/* Scanner Screen Box */}
+          <div className="relative border-4 border-charcoal bg-charcoal rounded-2xl p-6 overflow-hidden h-72 flex flex-col justify-between">
+            
+            {/* Scanner Grid Lines */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none"></div>
+
+            {/* Sweep laser beam */}
+            {isScanning && (
+              <div className="scanner-laser absolute left-0 right-0 h-1 bg-peach shadow-[0_0_15px_#FF5A36] z-10"></div>
+            )}
+
+            {/* Live Indicator */}
+            <div className="flex items-center justify-between text-xs font-black text-white z-10">
+              <span className="uppercase tracking-widest text-[9px] text-peach">SCANNER STATUS: {isScanning ? 'RUNNING' : 'IDLE'}</span>
+              <span className="text-sage uppercase text-[9px]">[ SCANNER ACTIVE ]</span>
+            </div>
+
+            {/* Scanning results layer */}
+            <div className="flex-1 flex flex-col justify-center space-y-3.5 z-10 mt-4">
+              {isScanning ? (
+                // Scanning placeholder
+                <div className="text-center py-6 space-y-3">
+                  <div className="w-8 h-8 rounded-full border-4 border-peach border-t-transparent animate-spin mx-auto"></div>
+                  <p className="text-[10px] text-peach font-black uppercase tracking-widest">Accessing live dark-store APIs...</p>
+                </div>
+              ) : scanFinished ? (
+                // Results Ranked List
+                <div className="space-y-2">
+                  {comparisonList.map((item, idx) => {
+                    const isWinning = item.store === winner.store;
+                    return (
+                      <div 
+                        key={item.store} 
+                        className={`flex items-center justify-between p-2.5 rounded-xl border-2 transition-all ${
+                          isWinning 
+                            ? 'bg-sage border-charcoal text-white shadow-brutalist-sm translate-x-1' 
+                            : 'bg-white border-charcoal text-charcoal'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-black">{item.store}</span>
+                          {isWinning && (
+                            <span className="text-[8px] font-black bg-peach text-white px-2 py-0.5 rounded border border-charcoal uppercase">WINNER</span>
+                          )}
+                        </div>
+                        <div className="text-right">
+                          <span className="text-sm font-black">₹{item.price}</span>
+                          <span className={`text-[9px] block ${isWinning ? 'text-white/80' : 'text-gray-400'}`}>ETA: {item.eta}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-10">
+                  <p className="text-gray-400 text-xs font-semibold">Select an item and press "Initiate Live Scan" to compare.</p>
+                </div>
+              )}
+            </div>
+
+            {/* Bottom feed footer */}
+            <div className="text-[9px] text-gray-500 font-bold uppercase text-center border-t border-white/10 pt-2.5 z-10">
+              *Live rates aggregated for BKC/Bandra region
+            </div>
+
+          </div>
+
+          {/* Winner details box */}
+          {scanFinished && !isScanning && (
+            <div className="mt-4 p-4 bg-sage text-white border-2 border-charcoal shadow-brutalist rounded-xl flex items-center justify-between">
+              <div>
+                <p className="text-[10px] font-black uppercase text-peach leading-none">Best Deal Found</p>
+                <h4 className="text-base font-black uppercase mt-1">Sourced via {winner.store}</h4>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl font-black text-white">₹{winner.price}</span>
+                <p className="text-[9px] opacity-80 leading-none">Instant dispatch ({winner.eta})</p>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    // --- REDESIGNED SHOPPING PORTAL VIEWS ---
+    function AppHomeView({ 
+      filteredProducts, selectedCategory, setSelectedCategory, 
+      handleAddToCart, handleRemoveFromCart, wishlist, handleToggleWishlist, 
+      cart, setSelectedProduct, setCompareProduct 
+    }) {
+      
+      const categories = [
+        { id: 'all', label: 'All Fresh', icon: '🛒' },
+        { id: 'fruits', label: 'Fruits & Veg', icon: '🥕' },
+        { id: 'dairy', label: 'Dairy & Bread', icon: '🥛' },
+        { id: 'munchies', label: 'Snacks & Drinks', icon: '🥤' },
+        { id: 'household', label: 'Household', icon: '🧼' }
+      ];
+
+      return (
+        <div className="space-y-8">
+          
+          {/* Brutalist Heading Panel */}
+          <div className="w-full rounded-3xl bg-peach border-4 border-charcoal p-6 md:p-10 relative overflow-hidden flex flex-col justify-center min-h-[160px] shadow-brutalist">
+            <div className="relative z-10 space-y-3 text-left">
+              <span className="bg-charcoal text-peach text-[9px] font-black px-2.5 py-1 rounded-md uppercase border border-charcoal">
+                Mumbai express delivery
+              </span>
+              <h2 className="text-4xl md:text-5xl font-black text-white uppercase leading-none drop-shadow-[2px_2px_0_#0A0A0A]">
+                What do you need today?
+              </h2>
+              <p className="text-xs font-semibold text-charcoal/90 max-w-sm">
+                Adding items automatically builds your split strategies. Real savings generated on every checkout card.
+              </p>
+            </div>
+          </div>
+
+          {/* Category Chips Scroll */}
+          <div className="space-y-3">
+            <h3 className="text-base font-black uppercase text-charcoal flex items-center gap-1.5">
+              <Icons.Tag className="w-5.5 h-5.5 text-peach" />
+              Product Categories
+            </h3>
+            <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 md:mx-0 md:px-0">
+              {categories.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-tight transition-all border-2 border-charcoal whitespace-nowrap ${
+                    selectedCategory === cat.id 
+                      ? 'bg-charcoal text-white shadow-brutalist-sm translate-y-[2px]' 
+                      : 'bg-white text-charcoal hover:bg-cream shadow-brutalist-sm hover:translate-y-[-1px]'
+                  }`}
+                >
+                  <span>{cat.icon}</span>
+                  <span>{cat.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Grid Products listings */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between border-b-2 border-charcoal pb-2">
+              <h3 className="text-lg font-black uppercase text-charcoal">
+                {selectedCategory === 'all' ? 'All Catalog items' : `${selectedCategory} catalog`}
+              </h3>
+              <span className="text-xs font-semibold text-gray-500 uppercase">
+                {filteredProducts.length} Products
+              </span>
+            </div>
+
+            {filteredProducts.length === 0 ? (
+              <div className="text-center py-16 bg-white rounded-3xl border-4 border-charcoal shadow-brutalist">
+                <Icons.AlertCircle className="w-12 h-12 text-gray-300 mx-auto" />
+                <p className="text-gray-500 font-black mt-3 text-xs uppercase">No items found matching your filters</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {filteredProducts.map(p => (
+                  <ProductCard 
+                    key={p.id}
+                    product={p}
+                    handleAddToCart={handleAddToCart}
+                    handleRemoveFromCart={handleRemoveFromCart}
+                    isWishlisted={wishlist.includes(p.id)}
+                    handleToggleWishlist={handleToggleWishlist}
+                    quantityInCart={cart.find(item => item.product.id === p.id)?.quantity || 0}
+                    setSelectedProduct={setSelectedProduct}
+                    setCompareProduct={setCompareProduct}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+        </div>
+      );
+    }
+
+    // --- PRODUCT CARD COMPONENT ---
+    function ProductCard({ 
+      product, handleAddToCart, handleRemoveFromCart, isWishlisted, 
+      handleToggleWishlist, quantityInCart, setSelectedProduct, setCompareProduct 
+    }) {
+      return (
+        <div className="bg-white rounded-3xl border-4 border-charcoal p-3 flex flex-col justify-between transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-brutalist relative group shadow-brutalist-sm">
+          
+          {/* Wishlist Button */}
+          <button
+            onClick={() => handleToggleWishlist(product.id)}
+            className="absolute top-4 right-4 z-10 p-2 rounded-xl bg-white border-2 border-charcoal hover:bg-cream transition-all shadow-brutalist-sm hover:translate-y-[-1px]"
+          >
+            <Icons.Heart 
+              className={`w-4.5 h-4.5 ${isWishlisted ? 'text-rose-500 fill-rose-500' : 'text-charcoal'}`} 
+            />
+          </button>
+
+          {/* Discount Badge */}
+          {product.discount && (
+            <span className="absolute top-4 left-4 z-10 px-2 py-0.5 bg-peach text-white text-[10px] font-black rounded-lg border-2 border-charcoal uppercase tracking-wider">
+              {product.discount}
+            </span>
+          )}
+
+          {/* Product Image Area */}
+          <div 
+            onClick={() => setSelectedProduct(product)}
+            className="w-full aspect-square rounded-2xl overflow-hidden bg-cream border-2 border-charcoal mb-3 cursor-pointer relative"
+          >
+            <img 
+              src={product.image} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300" 
+              alt={product.name} 
+            />
+            {/* ETA Overlay */}
+            <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-charcoal text-white text-[9px] font-black rounded-md border border-charcoal flex items-center gap-1">
+              <Icons.Zap className="w-2.5 h-2.5 text-peach fill-peach" />
+              {product.eta}
+            </span>
+          </div>
+
+          {/* Product Info */}
+          <div className="flex-1 flex flex-col justify-between">
+            <div className="space-y-1">
+              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">
+                {product.brand}
+              </span>
+              <h4 
+                onClick={() => setSelectedProduct(product)}
+                className="text-xs font-extrabold text-charcoal line-clamp-2 hover:text-peach cursor-pointer"
+              >
+                {product.name}
+              </h4>
+              <p className="text-[10px] font-bold text-gray-400">
+                {product.quantity}
+              </p>
+            </div>
+
+            {/* Compare Prices Shortcut */}
+            <button
+              onClick={() => setCompareProduct(product)}
+              className="w-full mt-2.5 py-1.5 px-2 bg-cream hover:bg-peach/10 rounded-xl text-[10px] font-black text-charcoal border-2 border-charcoal shadow-brutalist-sm hover:translate-y-[-1px] transition-all flex items-center justify-center gap-1.5"
+            >
+              <Icons.Store className="w-3.5 h-3.5 text-peach" />
+              Compare Stores
+            </button>
+
+            {/* Price & Add Actions Row */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t-2 border-charcoal">
+              <div>
+                <span className="text-base font-black text-charcoal block leading-none">
+                  ₹{product.price}
+                </span>
+                <span className="text-[10px] text-gray-400 line-through">
+                  ₹{product.mrp}
+                </span>
+              </div>
+
+              {quantityInCart === 0 ? (
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="px-3.5 py-1.5 bg-peach hover:bg-peachHover text-white rounded-xl text-xs font-black border-2 border-charcoal shadow-brutalist-sm hover:translate-y-[-1px] transition-all"
+                >
+                  Add
+                </button>
+              ) : (
+                <div className="flex items-center bg-charcoal text-white rounded-xl overflow-hidden shadow-brutalist-sm border-2 border-charcoal">
+                  <button 
+                    onClick={() => handleRemoveFromCart(product)}
+                    className="p-1.5 hover:bg-charcoal/90 text-gray-300 hover:text-white"
+                  >
+                    <Icons.Minus className="w-3 h-3" />
+                  </button>
+                  <span className="px-1.5 text-xs font-black text-peach min-w-[16px] text-center">
+                    {quantityInCart}
+                  </span>
+                  <button 
+                    onClick={() => handleAddToCart(product)}
+                    className="p-1.5 hover:bg-charcoal/90 text-gray-300 hover:text-white"
+                  >
+                    <Icons.Plus className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+        </div>
+      );
+    }
+
+    // --- PRODUCT DETAIL MODAL ---
+    function ProductDetailModal({ 
+      product, onClose, handleAddToCart, handleRemoveFromCart, 
+      cart, wishlist, handleToggleWishlist, setCompareProduct, competitorMultipliers 
+    }) {
+      const bl = getCompetitorDetails(product, 'blinkit', competitorMultipliers);
+      const zp = getCompetitorDetails(product, 'zepto', competitorMultipliers);
+      const im = getCompetitorDetails(product, 'instamart', competitorMultipliers);
+      const jm = getCompetitorDetails(product, 'jiomart', competitorMultipliers);
+
+      const qty = cart.find(item => item.product.id === product.id)?.quantity || 0;
+      const isWishlisted = wishlist.includes(product.id);
+
+      return (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-white rounded-[32px] max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-brutalist-lg border-4 border-charcoal relative animate-pop-in">
+            
+            {/* Close */}
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-2 rounded-xl bg-cream border-2 border-charcoal hover:bg-peach/10 shadow-brutalist-sm hover:translate-y-[-1px] transition-all z-10"
+            >
+              <Icons.X className="w-5 h-5" />
+            </button>
+
+            <div className="p-6 md:p-8 space-y-6">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <div className="w-full aspect-square rounded-2xl overflow-hidden bg-cream border-2 border-charcoal relative">
+                  <img src={product.image} className="w-full h-full object-cover" alt={product.name} />
+                  <span className="absolute top-3 left-3 bg-peach text-white text-[10px] font-black px-2.5 py-1 rounded-lg border-2 border-charcoal">
+                    {product.discount}
+                  </span>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{product.brand}</span>
+                    <h2 className="text-xl md:text-2xl font-black text-charcoal leading-none uppercase">{product.name}</h2>
+                    <p className="text-xs font-semibold text-gray-500">{product.quantity}</p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl font-black text-charcoal">₹{product.price}</span>
+                    <span className="text-sm text-gray-400 line-through">₹{product.mrp}</span>
+                  </div>
+
+                  <p className="text-xs text-gray-500 leading-relaxed font-semibold">
+                    {product.description}
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-2 bg-cream p-3 rounded-2xl text-[11px] border-2 border-charcoal">
+                    {Object.entries(product.specs).map(([key, val]) => (
+                      <div key={key}>
+                        <span className="text-gray-400 block font-semibold">{key}</span>
+                        <span className="text-charcoal font-black">{val}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => handleToggleWishlist(product.id)}
+                      className="p-3 rounded-xl border-2 border-charcoal hover:bg-cream shadow-brutalist-sm hover:translate-y-[-1px] transition-all"
+                    >
+                      <Icons.Heart className={`w-5 h-5 ${isWishlisted ? 'text-rose-500 fill-rose-500' : 'text-charcoal'}`} />
+                    </button>
+
+                    {qty === 0 ? (
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="flex-1 py-3.5 rounded-xl bg-peach text-white hover:bg-peachHover font-display font-black text-xs uppercase border-2 border-charcoal shadow-brutalist hover:shadow-brutalist-hover hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                      >
+                        Add to Cart
+                      </button>
+                    ) : (
+                      <div className="flex-1 flex items-center justify-between bg-charcoal text-white rounded-xl overflow-hidden p-1 shadow-brutalist-sm border-2 border-charcoal">
+                        <button onClick={() => handleRemoveFromCart(product)} className="px-4 py-2 hover:bg-charcoal/90 text-gray-300">
+                          <Icons.Minus className="w-4 h-4" />
+                        </button>
+                        <span className="text-xs font-black text-peach">
+                          {qty} in Cart
+                        </span>
+                        <button onClick={() => handleAddToCart(product)} className="px-4 py-2 hover:bg-charcoal/90 text-gray-300">
+                          <Icons.Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Price comparison breakdown inside modal */}
+              <div className="border-t-2 border-charcoal pt-5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-black uppercase text-charcoal flex items-center gap-2">
+                    <Icons.Store className="w-4.5 h-4.5 text-peach" />
+                    Live Competitor Price Matrix
+                  </h3>
+                  <button 
+                    onClick={() => { setCompareProduct(product); onClose(); }} 
+                    className="text-xs text-peach hover:text-peachHover font-black uppercase tracking-tight flex items-center gap-1"
+                  >
+                    Compare full view <Icons.ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-sage text-white rounded-xl border-2 border-charcoal p-3 text-center space-y-1 relative">
+                    <span className="absolute top-0 right-0 bg-peach text-white text-[8px] font-black px-1.5 py-0.5 rounded-bl border-l border-b border-charcoal">BEST</span>
+                    <p className="text-[9px] font-black uppercase opacity-90">Zepto</p>
+                    <p className="text-base font-black">₹{zp.finalPrice}</p>
+                    <p className="text-[9px] opacity-80">⏱️ {zp.eta}</p>
+                  </div>
+                  <div className="bg-white rounded-xl border-2 border-charcoal p-3 text-center space-y-1">
+                    <p className="text-[9px] font-black uppercase text-gray-500">{bl.store}</p>
+                    <p className="text-base font-black text-charcoal">₹{bl.finalPrice}</p>
+                    <p className="text-[9px] text-gray-400">⏱️ {bl.eta}</p>
+                  </div>
+                  <div className="bg-white rounded-xl border-2 border-charcoal p-3 text-center space-y-1">
+                    <p className="text-[9px] font-black uppercase text-gray-500">{im.store}</p>
+                    <p className="text-base font-black text-charcoal">₹{im.finalPrice}</p>
+                    <p className="text-[9px] text-gray-400">⏱️ {im.eta}</p>
+                  </div>
+                  <div className="bg-white rounded-xl border-2 border-charcoal p-3 text-center space-y-1">
+                    <p className="text-[9px] font-black uppercase text-gray-500">{jm.store}</p>
+                    <p className="text-base font-black text-charcoal">₹{jm.finalPrice}</p>
+                    <p className="text-[9px] text-gray-400">⏱️ {jm.eta}</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- COMPARISON PANEL DRAWER ---
+    function ComparisonDrawer({ product, onClose, competitorMultipliers, handleAddToCart, cart, setCartStrategy, setCartDrawerOpen }) {
+      
+      const bl = getCompetitorDetails(product, 'blinkit', competitorMultipliers);
+      const zp = getCompetitorDetails(product, 'zepto', competitorMultipliers);
+      const im = getCompetitorDetails(product, 'instamart', competitorMultipliers);
+      const jm = getCompetitorDetails(product, 'jiomart', competitorMultipliers);
+
+      const list = [
+        { key: 'zepto', store: zp.store, price: zp.price, coupon: zp.coupon, eta: zp.eta, finalPrice: zp.finalPrice, badge: 'Fastest & Best Value', badgeColor: 'bg-sage text-white' },
+        { key: 'jiomart', store: jm.store, price: jm.price, coupon: jm.coupon, eta: jm.eta, finalPrice: jm.finalPrice, badge: 'Lowest Price', badgeColor: 'bg-peach text-white' },
+        { key: 'blinkit', store: bl.store, price: bl.price, coupon: bl.coupon, eta: bl.eta, finalPrice: bl.finalPrice, badge: null, badgeColor: '' },
+        { key: 'instamart', store: im.store, price: im.price, coupon: im.coupon, eta: im.eta, finalPrice: im.finalPrice, badge: null, badgeColor: '' }
+      ].sort((a,b) => a.finalPrice - b.finalPrice);
+
+      const qty = cart.find(item => item.product.id === product.id)?.quantity || 0;
+
+      const triggerCartSplit = (strategy) => {
+        setCartStrategy(strategy);
+        if (qty === 0) handleAddToCart(product);
+        setCartDrawerOpen(true);
+        onClose();
+      };
+
+      return (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end justify-center z-50 animate-fade-in" onClick={onClose}>
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white w-full max-w-2xl rounded-t-[32px] p-6 space-y-6 max-h-[85vh] overflow-y-auto animate-slide-up border-t-4 border-charcoal shadow-brutalist-lg"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between border-b-2 border-charcoal pb-4">
+              <div>
+                <span className="text-[10px] font-black text-white bg-peach px-2.5 py-0.5 rounded border border-charcoal uppercase tracking-wider">AGGREGATOR FEED</span>
+                <h3 className="text-xl font-black text-charcoal mt-1.5 uppercase">Price Comparison Matrix</h3>
+                <p className="text-xs text-gray-500 font-semibold">{product.name} (Mumbai delivery)</p>
+              </div>
+              <button onClick={onClose} className="p-2 rounded-xl bg-cream border-2 border-charcoal hover:bg-peach/10 shadow-brutalist-sm hover:translate-y-[-1px] transition-all">
+                <Icons.X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* List */}
+            <div className="space-y-3">
+              {list.map(comp => {
+                const isLowest = comp.key === 'jiomart';
+                const isFastest = comp.key === 'zepto';
+
+                return (
+                  <div 
+                    key={comp.store}
+                    className={`p-4 rounded-2xl border-2 border-charcoal transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] flex flex-col md:flex-row md:items-center justify-between gap-4 ${
+                      isFastest 
+                        ? 'bg-cream shadow-brutalist' 
+                        : 'bg-white shadow-brutalist-sm'
+                    }`}
+                  >
+                    
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-black text-sm text-charcoal">{comp.store}</span>
+                        {comp.badge && (
+                          <span className={`text-[9px] font-black px-1.5 py-0.5 rounded border border-charcoal uppercase tracking-wider ${comp.badgeColor}`}>
+                            {comp.badge}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs font-semibold text-gray-400 flex items-center gap-1">
+                        <Icons.Zap className="w-3.5 h-3.5 text-peach fill-peach" />
+                        ETA: <strong className="text-charcoal font-black">{comp.eta}</strong>
+                      </p>
+                    </div>
+
+                    <div className="text-left md:text-center text-xs space-y-1">
+                      <span className="text-gray-400 font-bold uppercase text-[9px] block">Promo Match</span>
+                      <span className="font-black text-charcoal bg-cream border border-charcoal px-2 py-0.5 rounded-lg">
+                        {comp.coupon}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between md:justify-end gap-6 border-t border-dashed border-charcoal/20 md:border-0 pt-3 md:pt-0">
+                      <div>
+                        <span className="text-[10px] text-gray-400 block line-through">₹{comp.price}</span>
+                        <span className="text-lg font-black text-charcoal">₹{comp.finalPrice}</span>
+                      </div>
+                      
+                      <button
+                        onClick={() => triggerCartSplit(isLowest ? 'cheapest' : isFastest ? 'fastest' : 'balanced')}
+                        className="px-4 py-2 bg-peach hover:bg-peachHover text-white rounded-xl text-xs font-black border-2 border-charcoal shadow-brutalist-sm hover:translate-y-[-1px] transition-all flex items-center gap-1"
+                      >
+                        <Icons.Sparkles className="w-3.5 h-3.5 text-white" />
+                        Go {isLowest ? 'Cheapest' : isFastest ? 'Fastest' : 'Balanced'}
+                      </button>
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Smart Cart Optimization Prompt */}
+            <div className="bg-cream rounded-2xl p-4 flex gap-3 text-xs border-2 border-charcoal shadow-brutalist-sm">
+              <Icons.Info className="w-5 h-5 text-charcoal shrink-0 mt-0.5" />
+              <div>
+                <p className="font-black text-charcoal uppercase text-[10px]">AI Optimizer note:</p>
+                <p className="text-gray-500 font-semibold mt-1">
+                  Adding this item auto-calculates splits in your cart. Adjust checkout strategies inside the Cart Drawer.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      );
+    }
+
+    // --- SMART CART DRAWERS COMPONENT ---
+    function SmartCartDrawer({ 
+      cart, onClose, cartCalculations, cartStrategy, setCartStrategy, 
+      handleAddToCart, handleRemoveFromCart, handleClearCart, setView 
+    }) {
+      const isCartEmpty = cart.length === 0;
+      const currentDetails = cartCalculations[cartStrategy];
+
+      const checkoutSelectedCart = () => {
+        if (isCartEmpty) return;
+        setView('app-checkout');
+        onClose();
+      };
+
+      return (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-end animate-fade-in" onClick={onClose}>
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md bg-white h-full border-l-4 border-charcoal shadow-brutalist-lg flex flex-col justify-between animate-slide-up"
+          >
+            
+            {/* Header */}
+            <div className="p-4 border-b-2 border-charcoal flex items-center justify-between bg-cream">
+              <div>
+                <h3 className="text-lg font-black text-charcoal uppercase flex items-center gap-1.5">
+                  <Icons.ShoppingCart className="w-5 h-5 text-peach fill-peach" />
+                  Smart Cart
+                </h3>
+                <p className="text-[10px] text-gray-500 font-semibold uppercase">Mumbai live pricing scanner active</p>
+              </div>
+              <div className="flex items-center gap-2">
+                {!isCartEmpty && (
+                  <button onClick={handleClearCart} className="p-2 rounded-xl text-gray-400 hover:text-rose-500 border border-transparent hover:border-gray-200 transition-all">
+                    <Icons.X className="w-5.5 h-5.5" />
+                  </button>
+                )}
+                <button onClick={onClose} className="p-2 rounded-xl bg-white border-2 border-charcoal hover:bg-cream shadow-brutalist-sm hover:translate-y-[-1px] transition-all">
+                  <Icons.ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {isCartEmpty ? (
+              <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-cream border-2 border-charcoal flex items-center justify-center text-charcoal">
+                  <Icons.ShoppingCart className="w-8 h-8 text-peach fill-peach" />
+                </div>
+                <div>
+                  <p className="font-black uppercase text-charcoal">Your cart is empty</p>
+                  <p className="text-xs text-gray-400 font-semibold mt-1 max-w-xs mx-auto">Add items to configure live grocery scanner splits in Mumbai.</p>
+                </div>
+                <button onClick={onClose} className="px-5 py-2.5 bg-peach hover:bg-peachHover text-white rounded-xl text-xs font-black border-2 border-charcoal shadow-brutalist">
+                  Start Shopping
+                </button>
+              </div>
+            ) : (
+              <div className="flex-1 flex flex-col overflow-hidden">
+                
+                {/* AI STRATEGY TABS */}
+                <div className="bg-cream p-3.5 border-b-2 border-charcoal">
+                  <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest block mb-2 px-1">
+                    Select AI checkout Strategy
+                  </span>
+                  
+                  <div className="grid grid-cols-3 gap-2 bg-white p-1.5 rounded-2xl border-2 border-charcoal">
+                    <button
+                      onClick={() => setCartStrategy('balanced')}
+                      className={`py-2 rounded-xl text-xs font-black flex flex-col items-center border transition-all ${
+                        cartStrategy === 'balanced' 
+                          ? 'bg-sage text-white border-charcoal shadow-brutalist-sm translate-y-[1px]' 
+                          : 'text-gray-500 border-transparent hover:text-charcoal'
+                      }`}
+                    >
+                      <span>Balanced</span>
+                      <span className="text-[9px] font-black opacity-90">₹{cartCalculations.balanced?.totalPrice}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setCartStrategy('cheapest')}
+                      className={`py-2 rounded-xl text-xs font-black flex flex-col items-center border transition-all ${
+                        cartStrategy === 'cheapest' 
+                          ? 'bg-peach text-white border-charcoal shadow-brutalist-sm translate-y-[1px]' 
+                          : 'text-gray-500 border-transparent hover:text-charcoal'
+                      }`}
+                    >
+                      <span>Cheapest</span>
+                      <span className="text-[9px] font-black opacity-90">₹{cartCalculations.cheapest?.totalPrice}</span>
+                    </button>
+
+                    <button
+                      onClick={() => setCartStrategy('fastest')}
+                      className={`py-2 rounded-xl text-xs font-black flex flex-col items-center border transition-all ${
+                        cartStrategy === 'fastest' 
+                          ? 'bg-plum text-white border-charcoal shadow-brutalist-sm translate-y-[1px]' 
+                          : 'text-gray-500 border-transparent hover:text-charcoal'
+                      }`}
+                    >
+                      <span>Fastest</span>
+                      <span className="text-[9px] font-black opacity-90">₹{cartCalculations.fastest?.totalPrice}</span>
+                    </button>
+                  </div>
+
+                  {/* Strategy Info Box */}
+                  <div className="mt-3 p-3 bg-white rounded-2xl border-2 border-charcoal shadow-brutalist-sm text-[11px] space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-black text-charcoal uppercase">Strategy: {cartStrategy}</span>
+                      <span className="font-black text-peach bg-cream border border-charcoal px-2 py-0.5 rounded text-[9px]">
+                        ETA: {currentDetails?.eta}
+                      </span>
+                    </div>
+                    <p className="text-gray-400 font-semibold leading-tight">{currentDetails?.description}</p>
+                    <p className="text-[10px] text-charcoal font-black uppercase mt-1">
+                      📦 Shipments: {currentDetails?.deliveriesCount} Delivery
+                    </p>
+                  </div>
+                </div>
+
+                {/* Items List */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  {currentDetails?.items.map(({ product, quantity, sourcedFrom, finalUnit }) => (
+                    <div key={product.id} className="flex gap-3 bg-cream/50 p-3 rounded-2xl border-2 border-charcoal shadow-brutalist-sm">
+                      <img src={product.image} className="w-12 h-12 object-cover rounded-xl border-2 border-charcoal shrink-0" alt={product.name} />
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-1">
+                          <div>
+                            <h4 className="text-xs font-extrabold text-charcoal truncate">{product.name}</h4>
+                            <p className="text-[10px] text-gray-400 font-semibold">{product.quantity}</p>
+                          </div>
+                          <span className="text-xs font-black text-charcoal shrink-0">₹{finalUnit * quantity}</span>
+                        </div>
+
+                        <div className="flex items-center justify-between mt-2.5">
+                          <span className="text-[9px] font-black text-charcoal bg-white border border-charcoal px-2 py-0.5 rounded flex items-center gap-1 uppercase tracking-tight">
+                            <Icons.Store className="w-3 h-3 text-peach" />
+                            {sourcedFrom}
+                          </span>
+
+                          <div className="flex items-center bg-charcoal text-white rounded-lg overflow-hidden border border-charcoal scale-90 origin-right">
+                            <button onClick={() => handleRemoveFromCart(product)} className="px-2 py-1 hover:bg-charcoal/90 text-gray-300">
+                              <Icons.Minus className="w-3 h-3" />
+                            </button>
+                            <span className="px-1.5 text-[10px] font-black text-peach min-w-[14px] text-center">{quantity}</span>
+                            <button onClick={() => handleAddToCart(product)} className="px-2 py-1 hover:bg-charcoal/90 text-gray-300">
+                              <Icons.Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Billing Summary Box */}
+                <div className="p-4 border-t-2 border-charcoal bg-cream space-y-3">
+                  <div className="bg-sage text-white rounded-xl p-3 border-2 border-charcoal shadow-brutalist-sm flex items-center justify-between text-xs">
+                    <span className="font-black uppercase text-[10px] flex items-center gap-1.5">
+                      <Icons.Sparkles className="w-4 h-4 text-peach fill-peach" />
+                      AI Optimization Saving:
+                    </span>
+                    <strong className="text-white text-xs font-black uppercase">₹{currentDetails?.saving} Saved</strong>
+                  </div>
+
+                  <div className="space-y-1.5 text-xs font-semibold">
+                    <div className="flex justify-between text-gray-500">
+                      <span>Subtotal:</span>
+                      <span className="font-black text-charcoal">₹{currentDetails?.totalPrice}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-500">
+                      <span>Delivery Fee:</span>
+                      <span className="font-black text-charcoal">
+                        {currentDetails?.shippingFee === 0 ? "FREE" : `₹${currentDetails?.shippingFee}`}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm font-black border-t-2 border-charcoal pt-2 text-charcoal uppercase">
+                      <span>Total Bill:</span>
+                      <span>₹{(currentDetails?.totalPrice || 0) + (currentDetails?.shippingFee || 0)}</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={checkoutSelectedCart}
+                    className="w-full py-3.5 bg-peach hover:bg-peachHover text-white rounded-xl text-xs font-black uppercase border-2 border-charcoal shadow-brutalist flex items-center justify-center gap-2 mt-1"
+                  >
+                    <span>Proceed to Checkout</span>
+                    <Icons.ArrowRight className="w-4 h-4 text-white" />
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+          </div>
+        </div>
+      );
+    }
+
+    // --- CHECKOUT VIEW ---
+    function CheckoutView({ cart, currentCartSummary, cartStrategy, addresses, setOrders, setCart, setLifetimeSavings, setView, showNotification }) {
+      const [addressId, setAddressId] = useState(addresses[0]?.id || 1);
+      const [paymentMethod, setPaymentMethod] = useState('card');
+      const [isProcessing, setIsProcessing] = useState(false);
+      
+      const billingTotal = currentCartSummary ? currentCartSummary.totalPrice + currentCartSummary.shippingFee : 0;
+      const savingsAmt = currentCartSummary ? currentCartSummary.saving : 0;
+
+      const placeOrder = () => {
+        if (cart.length === 0) return;
+        setIsProcessing(true);
+        
+        setTimeout(() => {
+          setIsProcessing(false);
+          const newOrder = {
+            id: `SW-${Math.floor(1000 + Math.random() * 9000)}`,
+            date: "Today",
+            itemsCount: cart.length,
+            total: billingTotal,
+            savings: savingsAmt,
+            status: "In Transit",
+            eta: currentCartSummary.eta
+          };
+          
+          setOrders(prev => [newOrder, ...prev]);
+          setLifetimeSavings(prev => prev + savingsAmt);
+          setCart([]);
+          showNotification("Order placed successfully with ShopWise AI!");
+          setView('app-dashboard');
+        }, 1800);
+      };
+
+      return (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
+          
+          <div className="lg:col-span-2 space-y-6">
+            <h2 className="text-3xl font-black uppercase tracking-tight text-charcoal">Secure Checkout</h2>
+
+            {/* Address */}
+            <div className="bg-white p-5 rounded-3xl border-4 border-charcoal space-y-4 shadow-brutalist">
+              <h3 className="text-sm font-black uppercase text-charcoal flex items-center gap-2 border-b-2 border-charcoal pb-2">
+                <span className="w-6 h-6 rounded bg-cream border border-charcoal flex items-center justify-center text-[10px] font-black">1</span>
+                Sourcing Delivery Address
+              </h3>
+              
+              <div className="space-y-3">
+                {addresses.map(addr => (
+                  <div 
+                    key={addr.id}
+                    onClick={() => setAddressId(addr.id)}
+                    className={`p-4 rounded-2xl border-2 border-charcoal cursor-pointer flex items-start gap-3 transition-all ${
+                      addressId === addr.id ? 'bg-cream shadow-brutalist-sm' : 'bg-white shadow-brutalist-sm hover:translate-y-[-1px]'
+                    }`}
+                  >
+                    <input 
+                      type="radio" 
+                      checked={addressId === addr.id}
+                      onChange={() => setAddressId(addr.id)}
+                      className="mt-1 accent-peach" 
+                    />
+                    <div>
+                      <span className="font-black text-xs text-charcoal block">{addr.label}</span>
+                      <span className="text-[11px] text-gray-400 font-semibold mt-1 block">{addr.text}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Payments */}
+            <div className="bg-white p-5 rounded-3xl border-4 border-charcoal space-y-4 shadow-brutalist">
+              <h3 className="text-sm font-black uppercase text-charcoal flex items-center gap-2 border-b-2 border-charcoal pb-2">
+                <span className="w-6 h-6 rounded bg-cream border border-charcoal flex items-center justify-center text-[10px] font-black">2</span>
+                Payment Options
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div 
+                  onClick={() => setPaymentMethod('card')}
+                  className={`p-4 rounded-2xl border-2 border-charcoal cursor-pointer text-center space-y-2 transition-all ${
+                    paymentMethod === 'card' ? 'bg-cream shadow-brutalist-sm' : 'bg-white shadow-brutalist-sm hover:translate-y-[-1px]'
+                  }`}
+                >
+                  <Icons.Award className="w-5 h-5 text-peach mx-auto" />
+                  <span className="text-xs font-black text-charcoal block">Credit Card</span>
+                </div>
+
+                <div 
+                  onClick={() => setPaymentMethod('upi')}
+                  className={`p-4 rounded-2xl border-2 border-charcoal cursor-pointer text-center space-y-2 transition-all ${
+                    paymentMethod === 'upi' ? 'bg-cream shadow-brutalist-sm' : 'bg-white shadow-brutalist-sm hover:translate-y-[-1px]'
+                  }`}
+                >
+                  <Icons.Sparkles className="w-5 h-5 text-peach mx-auto" />
+                  <span className="text-xs font-black text-charcoal block">UPI / Wallet</span>
+                </div>
+
+                <div 
+                  onClick={() => setPaymentMethod('cod')}
+                  className={`p-4 rounded-2xl border-2 border-charcoal cursor-pointer text-center space-y-2 transition-all ${
+                    paymentMethod === 'cod' ? 'bg-cream shadow-brutalist-sm' : 'bg-white shadow-brutalist-sm hover:translate-y-[-1px]'
+                  }`}
+                >
+                  <Icons.Store className="w-5 h-5 text-peach mx-auto" />
+                  <span className="text-xs font-black text-charcoal block">Cash on Delivery</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Summary */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-black uppercase text-charcoal">Order Summary</h2>
+
+            <div className="bg-white p-5 rounded-3xl border-4 border-charcoal space-y-4 shadow-brutalist">
+              
+              <div className="bg-cream p-3 rounded-2xl border-2 border-charcoal text-[11px] space-y-1">
+                <p className="font-black text-charcoal uppercase">Strategy: {cartStrategy}</p>
+                <p className="text-gray-400 font-semibold">ETA: <strong>{currentCartSummary?.eta}</strong></p>
+              </div>
+
+              <div className="divide-y-2 divide-charcoal/10 max-h-48 overflow-y-auto">
+                {currentCartSummary?.items.map(({ product, quantity, finalUnit, sourcedFrom }) => (
+                  <div key={product.id} className="py-2.5 flex justify-between gap-2 text-xs font-semibold">
+                    <div>
+                      <p className="font-extrabold text-charcoal truncate max-w-[150px]">{product.name}</p>
+                      <span className="text-[9px] text-gray-400">Qty: {quantity} • Store: {sourcedFrom}</span>
+                    </div>
+                    <span className="font-black text-charcoal shrink-0">₹{finalUnit * quantity}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-t-2 border-charcoal pt-3 space-y-2 text-xs font-semibold">
+                <div className="flex justify-between text-gray-500">
+                  <span>Subtotal:</span>
+                  <span className="font-black text-charcoal">₹{currentCartSummary?.totalPrice}</span>
+                </div>
+                <div className="flex justify-between text-gray-500">
+                  <span>Shipping:</span>
+                  <span className="font-black text-charcoal">₹{currentCartSummary?.shippingFee}</span>
+                </div>
+                <div className="flex justify-between text-white bg-sage p-2 rounded-xl border-2 border-charcoal shadow-brutalist-sm">
+                  <span>AI Total Savings:</span>
+                  <span className="font-black">₹{currentCartSummary?.saving}</span>
+                </div>
+                <div className="flex justify-between text-base font-black border-t-2 border-charcoal pt-3 text-charcoal uppercase">
+                  <span>Grand Bill:</span>
+                  <span>₹{billingTotal}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={placeOrder}
+                disabled={isProcessing}
+                className="w-full py-4 bg-peach hover:bg-peachHover text-white rounded-2xl text-xs font-black uppercase border-2 border-charcoal shadow-brutalist flex items-center justify-center gap-2"
+              >
+                {isProcessing ? (
+                  <div className="w-5 h-5 rounded-full border-4 border-white border-t-transparent animate-spin" />
+                ) : (
+                  <>
+                    <Icons.Check className="w-5 h-5 text-white" />
+                    Place Order (₹{billingTotal})
+                  </>
+                )}
+              </button>
+              
+            </div>
+          </div>
+
+        </div>
+      );
+    }
+
+    // --- USER DASHBOARD ---
+    function DashboardView({ orders, wishlist, catalog, handleAddToCart, handleToggleWishlist, lifetimeSavings, priceAlerts, setPriceAlerts, addresses, setAddresses, setView }) {
+      const [alertName, setAlertName] = useState(catalog[0]?.name || '');
+      const [alertTarget, setAlertTarget] = useState(150);
+      
+      const wishlistedItems = catalog.filter(p => wishlist.includes(p.id));
+
+      const addPriceAlert = (e) => {
+        e.preventDefault();
+        const currentProd = catalog.find(p => p.name === alertName);
+        if (!currentProd) return;
+        const newAlert = {
+          id: Date.now(),
+          productName: alertName,
+          targetPrice: parseInt(alertTarget),
+          currentPrice: currentProd.price
+        };
+        setPriceAlerts(prev => [newAlert, ...prev]);
+        setAlertTarget(100);
+      };
+
+      const removePriceAlert = (id) => {
+        setPriceAlerts(prev => prev.filter(a => a.id !== id));
+      };
+
+      return (
+        <div className="space-y-8 text-left">
+          
+          <div className="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center bg-white p-6 rounded-3xl border-4 border-charcoal shadow-brutalist">
+            <div className="space-y-1">
+              <span className="text-[10px] font-black text-white bg-peach px-2.5 py-0.5 rounded border border-charcoal uppercase tracking-wider">MEMBER ACCOUNT</span>
+              <h2 className="text-2xl font-black text-charcoal uppercase leading-none mt-1">Hello, Satya</h2>
+              <p className="text-xs text-gray-500 font-semibold">Track pricing thresholds, orders, and addresses</p>
+            </div>
+
+            <div className="bg-cream border-2 border-charcoal p-4 rounded-2xl flex items-center gap-4 self-stretch md:self-auto justify-between shadow-brutalist-sm">
+              <div className="w-12 h-12 rounded-xl bg-charcoal flex items-center justify-center text-peach">
+                <Icons.Award className="w-6 h-6 fill-peach text-peach" />
+              </div>
+              <div>
+                <span className="text-[9px] text-gray-400 uppercase font-black block">Cumulative AI Savings</span>
+                <span className="text-lg font-black text-charcoal">₹{lifetimeSavings}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div className="lg:col-span-2 space-y-8">
+              
+              {/* Order history */}
+              <div className="bg-white p-5 rounded-3xl border-4 border-charcoal space-y-4 shadow-brutalist">
+                <h3 className="text-sm font-black uppercase text-charcoal flex items-center gap-2 border-b-2 border-charcoal pb-2">
+                  <Icons.Check className="w-4.5 h-4.5 text-sage" />
+                  Order Dispatch Log
+                </h3>
+                
+                {orders.length === 0 ? (
+                  <p className="text-xs text-gray-400 font-semibold py-6 text-center">No orders recorded.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {orders.map(order => (
+                      <div key={order.id} className="p-4 bg-cream/40 rounded-2xl border-2 border-charcoal flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs font-semibold">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-black text-charcoal">{order.id}</span>
+                            <span className="text-[9px] font-black text-white bg-sage px-1.5 py-0.5 rounded border border-charcoal uppercase">{order.status}</span>
+                          </div>
+                          <p className="text-[10px] text-gray-400">{order.date} • {order.itemsCount} items</p>
+                        </div>
+
+                        <div>
+                          <span className="text-[9px] text-gray-400 block uppercase">Paid Amount</span>
+                          <strong className="text-charcoal font-black">₹{order.total}</strong>
+                        </div>
+
+                        <div>
+                          <span className="text-[9px] text-peach block font-black uppercase">Savings Yield</span>
+                          <strong className="text-peach font-black">₹{order.savings}</strong>
+                        </div>
+
+                        <span className="text-[10px] text-gray-500 font-black">ETA: {order.eta}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Wishlist */}
+              <div className="bg-white p-5 rounded-3xl border-4 border-charcoal space-y-4 shadow-brutalist">
+                <h3 className="text-sm font-black uppercase text-charcoal flex items-center gap-2 border-b-2 border-charcoal pb-2">
+                  <Icons.Heart className="w-4.5 h-4.5 text-rose-500 fill-rose-500" />
+                  Saved Products Directory
+                </h3>
+                
+                {wishlistedItems.length === 0 ? (
+                  <p className="text-xs text-gray-400 font-semibold py-6 text-center">No saved items.</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {wishlistedItems.map(p => (
+                      <div key={p.id} className="p-3 bg-cream/30 rounded-2xl border-2 border-charcoal flex items-center justify-between gap-3 shadow-brutalist-sm">
+                        <div className="flex items-center gap-3">
+                          <img src={p.image} className="w-10 h-10 object-cover rounded-lg border border-charcoal shrink-0" alt={p.name} />
+                          <div>
+                            <h4 className="text-xs font-extrabold text-charcoal truncate max-w-[120px]">{p.name}</h4>
+                            <span className="text-xs font-black text-charcoal">₹{p.price}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <button onClick={() => handleAddToCart(p)} className="p-2 rounded-xl bg-peach text-white border-2 border-charcoal hover:bg-peachHover shadow-brutalist-sm">
+                            <Icons.Plus className="w-4 h-4" />
+                          </button>
+                          <button onClick={() => handleToggleWishlist(p.id)} className="p-2 rounded-xl bg-white border-2 border-charcoal hover:bg-cream text-rose-500">
+                            <Icons.X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
+
+            {/* Price Alerts */}
+            <div className="space-y-6">
+              
+              <div className="bg-white p-5 rounded-3xl border-4 border-charcoal space-y-4 shadow-brutalist">
+                <h3 className="text-sm font-black uppercase text-charcoal flex items-center gap-2 border-b-2 border-charcoal pb-2">
+                  <Icons.Bell className="w-4.5 h-4.5 text-peach" />
+                  Set Threshold Alerts
+                </h3>
+
+                <form onSubmit={addPriceAlert} className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-black text-gray-500 uppercase block">Catalog Item</label>
+                    <select 
+                      value={alertName}
+                      onChange={(e) => setAlertName(e.target.value)}
+                      className="w-full p-2.5 bg-cream border-2 border-charcoal rounded-xl text-xs font-black focus:outline-none"
+                    >
+                      {catalog.map(p => (
+                        <option key={p.id} value={p.name}>{p.name} (₹{p.price})</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-black text-gray-500 uppercase block">Alert Threshold (₹)</label>
+                    <input 
+                      type="number" 
+                      value={alertTarget}
+                      onChange={(e) => setAlertTarget(e.target.value)}
+                      className="w-full p-2.5 bg-cream border-2 border-charcoal rounded-xl text-xs font-black focus:outline-none"
+                    />
+                  </div>
+
+                  <button type="submit" className="w-full py-2.5 bg-charcoal text-white rounded-xl text-xs font-black uppercase border-2 border-charcoal shadow-brutalist-sm hover:translate-y-[-1px] transition-all">
+                    Register Price Alert
+                  </button>
+                </form>
+
+                {/* List of alerts */}
+                <div className="space-y-2 pt-3 border-t-2 border-charcoal">
+                  <span className="text-[9px] font-black text-gray-500 uppercase block">Active Alerts</span>
+                  {priceAlerts.map(alert => (
+                    <div key={alert.id} className="p-3 bg-cream border-2 border-charcoal rounded-2xl flex items-center justify-between text-xs font-semibold shadow-brutalist-sm">
+                      <div>
+                        <p className="font-extrabold text-charcoal truncate max-w-[120px]">{alert.productName}</p>
+                        <span className="text-[9px] text-gray-400 block mt-0.5">Alert if &lt; ₹{alert.targetPrice} (Now: ₹{alert.currentPrice})</span>
+                      </div>
+                      <button onClick={() => removePriceAlert(alert.id)} className="text-gray-400 hover:text-rose-500">
+                        <Icons.X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      );
+    }
+
+    // --- ADMIN PANEL ---
+    function AdminPanel({ competitorMultipliers, setCompetitorMultipliers, catalog, setCatalog, showNotification }) {
+      
+      const handleMultiplierChange = (compKey, value) => {
+        const val = parseFloat(value);
+        if (isNaN(val)) return;
+        setCompetitorMultipliers(prev => ({
+          ...prev,
+          [compKey]: val
+        }));
+        showNotification(`Modified competitor ${compKey} pricing factor.`);
+      };
+
+      const toggleStock = (prodId) => {
+        setCatalog(prev => prev.map(p => {
+          if (p.id === prodId) {
+            const hasStock = p.specs["Stock Status"] !== "Out of Stock";
+            return {
+              ...p,
+              specs: {
+                ...p.specs,
+                "Stock Status": hasStock ? "Out of Stock" : "In Stock"
+              }
+            };
+          }
+          return p;
+        }));
+        showNotification("Catalog stock modified");
+      };
+
+      return (
+        <div className="space-y-8 text-left">
+          
+          <div className="bg-white p-6 rounded-3xl border-4 border-charcoal shadow-brutalist space-y-1">
+            <span className="text-[10px] font-black text-white bg-peach px-2.5 py-0.5 rounded border border-charcoal uppercase tracking-wider">SYSTEM PANEL</span>
+            <h2 className="text-2xl font-black text-charcoal uppercase mt-1">ShopWise Engine Control</h2>
+            <p className="text-xs text-gray-500 font-semibold">Tweak live competitor markup metrics and item availability indexes.</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Competitor Modifiers */}
+            <div className="bg-white p-5 rounded-3xl border-4 border-charcoal space-y-5 shadow-brutalist lg:col-span-1">
+              <h3 className="text-sm font-black uppercase text-charcoal flex items-center gap-2 border-b-2 border-charcoal pb-2">
+                <Icons.Store className="w-4.5 h-4.5 text-peach" />
+                Live Competitor Markups
+              </h3>
+
+              <div className="space-y-4">
+                {Object.keys(COMPETITORS).map(compKey => (
+                  <div key={compKey} className="space-y-1.5">
+                    <div className="flex justify-between text-xs font-extrabold uppercase">
+                      <span>{COMPETITORS[compKey].name} Factor</span>
+                      <strong className="text-peach">{competitorMultipliers[compKey]}x</strong>
+                    </div>
+                    <input 
+                      type="range" 
+                      min="0.7" 
+                      max="1.3" 
+                      step="0.01" 
+                      value={competitorMultipliers[compKey]}
+                      onChange={(e) => handleMultiplierChange(compKey, e.target.value)}
+                      className="w-full accent-peach"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Catalog Stock manager */}
+            <div className="bg-white p-5 rounded-3xl border-4 border-charcoal space-y-4 shadow-brutalist lg:col-span-2">
+              <h3 className="text-sm font-black uppercase text-charcoal flex items-center gap-2 border-b-2 border-charcoal pb-2">
+                <Icons.Database className="w-4.5 h-4.5 text-peach" />
+                Catalog Directory Stock Manager
+              </h3>
+
+              <div className="divide-y-2 divide-charcoal/10 max-h-80 overflow-y-auto pr-2">
+                {catalog.map(p => {
+                  const isOutOfStock = p.specs["Stock Status"] === "Out of Stock";
+                  return (
+                    <div key={p.id} className="py-2.5 flex items-center justify-between gap-3 text-xs font-semibold">
+                      <div className="flex items-center gap-3">
+                        <img src={p.image} className="w-9 h-9 object-cover rounded-lg border border-charcoal" alt={p.name} />
+                        <div>
+                          <p className="font-extrabold text-charcoal truncate max-w-[170px]">{p.name}</p>
+                          <span className="text-[9px] text-gray-400">Base Price: ₹{p.price}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => toggleStock(p.id)}
+                        className={`px-3 py-1.5 rounded-xl font-black text-[9px] uppercase border border-charcoal transition-all ${
+                          isOutOfStock 
+                            ? 'bg-rose-50 text-rose-600 hover:bg-rose-100 shadow-brutalist-sm hover:translate-y-[-1px]' 
+                            : 'bg-cream text-sage hover:bg-green-100 shadow-brutalist-sm hover:translate-y-[-1px]'
+                        }`}
+                      >
+                        {isOutOfStock ? "Out of Stock" : "In Stock"}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      );
+    }
+
+    // --- ADDRESS PICKER MODAL ---
+    function AddressPickerModal({ addresses, setAddresses, onClose }) {
+      const [newLabel, setNewLabel] = useState('Work');
+      const [newText, setNewText] = useState('');
+
+      const selectAddress = (id) => {
+        setAddresses(prev => prev.map(a => ({
+          ...a,
+          active: a.id === id
+        })));
+        onClose();
+      };
+
+      const addAddress = (e) => {
+        e.preventDefault();
+        if (newText.trim() === '') return;
+        const newAddr = {
+          id: Date.now(),
+          label: newLabel,
+          text: newText,
+          active: false
+        };
+        setAddresses(prev => [...prev, newAddr]);
+        setNewText('');
+        setNewLabel('Other');
+      };
+
+      return (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-[32px] max-w-md w-full p-6 space-y-6 border-4 border-charcoal shadow-brutalist-lg relative animate-pop-in text-left"
+          >
+            <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-xl bg-cream border-2 border-charcoal hover:bg-peach/10 shadow-brutalist-sm">
+              <Icons.X className="w-5 h-5" />
+            </button>
+
+            <div>
+              <h3 className="text-lg font-black uppercase text-charcoal">Select Delivery Point</h3>
+              <p className="text-xs text-gray-500 font-semibold mt-1">Aggregated store comparison parameters will update to map local dark-store networks.</p>
+            </div>
+
+            {/* List */}
+            <div className="space-y-3">
+              {addresses.map(addr => (
+                <div 
+                  key={addr.id}
+                  onClick={() => selectAddress(addr.id)}
+                  className={`p-3.5 rounded-2xl border-2 border-charcoal cursor-pointer flex items-start gap-3 transition-all ${
+                    addr.active ? 'bg-cream shadow-brutalist-sm' : 'bg-white shadow-brutalist-sm hover:translate-y-[-1px]'
+                  }`}
+                >
+                  <Icons.MapPin className={`w-4 h-4 mt-0.5 shrink-0 ${addr.active ? 'text-peach' : 'text-gray-400'}`} />
+                  <div>
+                    <span className="font-black text-xs text-charcoal block">{addr.label}</span>
+                    <span className="text-[11px] text-gray-400 font-semibold mt-1 block truncate max-w-[260px]">{addr.text}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Form */}
+            <form onSubmit={addAddress} className="border-t-2 border-charcoal pt-4 space-y-3">
+              <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Add New Location</span>
+              <div className="flex gap-2">
+                {['Work', 'Gym', 'Other'].map(lbl => (
+                  <button 
+                    key={lbl}
+                    type="button"
+                    onClick={() => setNewLabel(lbl)}
+                    className={`px-3 py-1.5 rounded-lg text-[10px] font-black border transition-all ${
+                      newLabel === lbl ? 'bg-charcoal text-white border-charcoal' : 'bg-cream text-gray-500 border-transparent'
+                    }`}
+                  >
+                    {lbl}
+                  </button>
+                ))}
+              </div>
+
+              <input 
+                type="text" 
+                placeholder="Enter complete building name, BKC road details..."
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+                className="w-full p-2.5 bg-cream border-2 border-charcoal rounded-xl text-xs font-semibold focus:outline-none"
+              />
+
+              <button type="submit" className="w-full py-2.5 bg-peach text-white hover:bg-peachHover rounded-xl text-xs font-black uppercase border-2 border-charcoal shadow-brutalist-sm">
+                Save Address
+              </button>
+            </form>
+
+          </div>
+        </div>
+      );
+    }
+
+    // --- MOUNT APP ---
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(<App />);
+
+  </script>
+
+</body>
+</html>
