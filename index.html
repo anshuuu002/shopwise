@@ -159,16 +159,45 @@
       Settings: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
       AlertCircle: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
       Sparkles: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5 5 3Z"/></svg>,
-      Play: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Play: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+      Info: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
     };
 
     // --- MOCK PRODUCT CATALOG ---
     const PRODUCT_CATALOG = [
       {
         id: 1,
-        name: "Amul Butter (Pasteurized)",
+        name: "Amul Taaza Toned Fresh Milk",
         brand: "Amul",
-        category: "dairy",
+        category: "dairy_bread",
+        quantity: "1 Litre",
+        price: 56,
+        mrp: 60,
+        discount: "6% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=60",
+        description: "Fresh pasteurized toned milk, rich in calcium and protein. Perfect for tea, coffee, and daily nutrition.",
+        specs: { Origin: "India (Gujarat)", "Shelf Life": "2 Days", Nutritional: "58 kcal/100ml" }
+      },
+      {
+        id: 2,
+        name: "Mother Dairy Ultimate Dahi",
+        brand: "Mother Dairy",
+        category: "dairy_bread",
+        quantity: "400g Cup",
+        price: 35,
+        mrp: 40,
+        discount: "12% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1571244856341-4f3dd95db36e?w=400&auto=format&fit=crop&q=60",
+        description: "Thick, creamy, and delicious curd made from pasteurized milk. Source of active probiotics.",
+        specs: { Origin: "India", "Shelf Life": "7 Days", Nutritional: "60 kcal/100g" }
+      },
+      {
+        id: 3,
+        name: "Amul Butter (Salted)",
+        brand: "Amul",
+        category: "dairy_bread",
         quantity: "500g Pack",
         price: 245,
         mrp: 275,
@@ -179,25 +208,53 @@
         specs: { Origin: "India (Gujarat)", "Shelf Life": "6 Months", Nutritional: "720 kcal/100g" }
       },
       {
-        id: 2,
-        name: "Hass Avocado (Imported)",
-        brand: "Organic Farms",
-        category: "fruits",
-        quantity: "1 pc (approx. 200g)",
-        price: 189,
-        mrp: 249,
-        discount: "24% OFF",
+        id: 4,
+        name: "Amul Fresh Paneer Block",
+        brand: "Amul",
+        category: "dairy_bread",
+        quantity: "200g Pack",
+        price: 85,
+        mrp: 95,
+        discount: "10% OFF",
         eta: "8 MINS",
-        image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=60",
-        description: "Rich, creamy, and loaded with healthy monounsaturated fats. Perfectly ripe and ready-to-eat.",
-        specs: { Origin: "Mexico/New Zealand", "Shelf Life": "3 Days", Nutritional: "160 kcal, 15g Fat" }
+        image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&auto=format&fit=crop&q=60",
+        description: "Soft and delicious paneer block made from fresh milk. Rich in calcium and healthy milk fats.",
+        specs: { Origin: "India", "Shelf Life": "15 Days", Nutritional: "265 kcal/100g" }
       },
       {
-        id: 3,
+        id: 5,
+        name: "Eggoz Farm Fresh White Eggs",
+        brand: "Eggoz",
+        category: "dairy_bread",
+        quantity: "6 pcs Tray",
+        price: 48,
+        mrp: 60,
+        discount: "20% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400&auto=format&fit=crop&q=60",
+        description: "Farm fresh high protein white eggs. Sorted and sanitized, rich in Vitamin D.",
+        specs: { Origin: "India", "Shelf Life": "10 Days", Nutritional: "70 kcal/Egg" }
+      },
+      {
+        id: 6,
+        name: "English Oven Brown Bread",
+        brand: "English Oven",
+        category: "dairy_bread",
+        quantity: "400g Loaf",
+        price: 45,
+        mrp: 50,
+        discount: "10% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=60",
+        description: "Soft, freshly baked whole wheat brown bread. High fiber content for a healthy breakfast.",
+        specs: { Origin: "India", "Shelf Life": "3 Days", Nutritional: "240 kcal/100g" }
+      },
+      {
+        id: 7,
         name: "Premium Bananas (Robusta)",
-        brand: "Zespri Co",
-        category: "fruits",
-        quantity: "500g (3-4 pcs)",
+        brand: "Organic Farms",
+        category: "fruits_veg",
+        quantity: "6 pcs (approx 600g)",
         price: 39,
         mrp: 55,
         discount: "29% OFF",
@@ -207,74 +264,606 @@
         specs: { Origin: "India (Maharashtra)", "Shelf Life": "4 Days", Nutritional: "89 kcal, 22g Carbs" }
       },
       {
-        id: 4,
-        name: "Organic Whole Milk (Pasteurized)",
-        brand: "Pride of Cows",
-        category: "dairy",
-        quantity: "1 Litre",
-        price: 82,
-        mrp: 95,
+        id: 8,
+        name: "Royal Gala Apples (Imported)",
+        brand: "Zespri Co",
+        category: "fruits_veg",
+        quantity: "4 pcs (approx 500g)",
+        price: 149,
+        mrp: 199,
+        discount: "25% OFF",
+        eta: "10 MINS",
+        image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&auto=format&fit=crop&q=60",
+        description: "Crunchy and sweet Gala apples imported from international orchards. High in antioxidants and fiber.",
+        specs: { Origin: "New Zealand", "Shelf Life": "7 Days", Nutritional: "52 kcal/100g" }
+      },
+      {
+        id: 9,
+        name: "Fresh Red Onions (Pyaaz)",
+        brand: "Farmers Fresh",
+        category: "fruits_veg",
+        quantity: "1kg Bag",
+        price: 42,
+        mrp: 60,
+        discount: "30% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1508747702876-468c47d4f6c1?w=400&auto=format&fit=crop&q=60",
+        description: "Freshly harvested red onions from Nashik. Crisp texture with sharp, pungent flavor.",
+        specs: { Origin: "India (Nashik)", "Shelf Life": "10 Days", Nutritional: "40 kcal/100g" }
+      },
+      {
+        id: 10,
+        name: "Fresh Jyoti Potatoes (Aloo)",
+        brand: "Farmers Fresh",
+        category: "fruits_veg",
+        quantity: "1kg Bag",
+        price: 32,
+        mrp: 45,
+        discount: "28% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&auto=format&fit=crop&q=60",
+        description: "Fresh Jyoti potatoes sourced from West Bengal. Perfect choice for daily curries and frying.",
+        specs: { Origin: "India (WB)", "Shelf Life": "14 Days", Nutritional: "77 kcal/100g" }
+      },
+      {
+        id: 11,
+        name: "Red Hybrid Tomatoes (Tamatar)",
+        brand: "Farmers Fresh",
+        category: "fruits_veg",
+        quantity: "500g Bag",
+        price: 29,
+        mrp: 40,
+        discount: "27% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1595855759920-86582396756a?w=400&auto=format&fit=crop&q=60",
+        description: "Plump, red tomatoes loaded with lycopene. Essential building block for Indian curries.",
+        specs: { Origin: "India (Maharashtra)", "Shelf Life": "5 Days", Nutritional: "18 kcal/100g" }
+      },
+      {
+        id: 12,
+        name: "Aashirvaad Shudh Chakki Atta",
+        brand: "Aashirvaad",
+        category: "staples",
+        quantity: "5kg Bag",
+        price: 245,
+        mrp: 290,
+        discount: "15% OFF",
+        eta: "10 MINS",
+        image: "https://images.unsplash.com/photo-1574316071802-0d684efa7bf5?w=400&auto=format&fit=crop&q=60",
+        description: "100% pure stone-milled whole wheat flour. Makes soft, fluffy rotis that retain nutrition.",
+        specs: { Origin: "India (MP)", "Shelf Life": "3 Months", Nutritional: "340 kcal/100g" }
+      },
+      {
+        id: 13,
+        name: "Daawat Rozana Basmati Rice",
+        brand: "Daawat",
+        category: "staples",
+        quantity: "5kg Bag",
+        price: 399,
+        mrp: 499,
+        discount: "20% OFF",
+        eta: "10 MINS",
+        image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=60",
+        description: "Aromatic, long grain Basmati rice. Aged to perfection, ideal for daily pulav, biryani, and steam rice.",
+        specs: { Origin: "India (Haryana)", "Shelf Life": "12 Months", Nutritional: "350 kcal/100g" }
+      },
+      {
+        id: 14,
+        name: "Fortune Soya Refined Cooking Oil",
+        brand: "Fortune",
+        category: "staples",
+        quantity: "1 Litre Pouch",
+        price: 125,
+        mrp: 160,
+        discount: "21% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=60",
+        description: "Refined soyabean oil enriched with Vitamin A and D. Lightweight and neutral flavor for cooking.",
+        specs: { Origin: "India", "Shelf Life": "9 Months", Nutritional: "900 kcal/100ml" }
+      },
+      {
+        id: 15,
+        name: "Uttam Sulphurless Sugar",
+        brand: "Uttam Sugar",
+        category: "staples",
+        quantity: "1kg Pack",
+        price: 52,
+        mrp: 60,
         discount: "13% OFF",
         eta: "8 MINS",
-        image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=60",
-        description: "Single-source farm fresh milk with no hormones or preservatives. Pasteurized and homogenized for rich taste.",
-        specs: { Origin: "India (Pune)", "Shelf Life": "2 Days", Nutritional: "62 kcal, 3.2g Protein" }
+        image: "https://images.unsplash.com/photo-1581781898089-9118fc0c2796?w=400&auto=format&fit=crop&q=60",
+        description: "Refined sulphurless sugar crystals. Dissolves instantly, clean and double sorted.",
+        specs: { Origin: "India (UP)", "Shelf Life": "24 Months", Nutritional: "400 kcal/100g" }
       },
       {
-        id: 5,
-        name: "Greek Yogurt (Blueberry)",
-        brand: "Epigamia",
-        category: "dairy",
-        quantity: "90g Tub",
-        price: 45,
-        mrp: 50,
-        discount: "10% OFF",
+        id: 16,
+        name: "Tata Salt (Iodized)",
+        brand: "Tata",
+        category: "staples",
+        quantity: "1kg Pack",
+        price: 26,
+        mrp: 28,
+        discount: "7% OFF",
         eta: "8 MINS",
-        image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&auto=format&fit=crop&q=60",
-        description: "Thick, strained Greek yogurt layered with real blueberry pulp. High protein and low fat snack.",
-        specs: { Origin: "India", "Shelf Life": "12 Days", Nutritional: "95 kcal, 6g Protein" }
+        image: "https://images.unsplash.com/photo-1604838612746-8b2256df21a2?w=400&auto=format&fit=crop&q=60",
+        description: "India's trusted vacuum evaporated iodized salt. Essential mineral regulator for every kitchen.",
+        specs: { Origin: "India (Gujarat)", "Shelf Life": "24 Months", Nutritional: "Sodium 38.7g/100g" }
       },
       {
-        id: 6,
-        name: "Artisanal Sourdough Bread",
-        brand: "The Baker's Dozen",
-        category: "dairy",
-        quantity: "400g Loaf",
-        price: 110,
-        mrp: 140,
-        discount: "21% OFF",
-        eta: "12 MINS",
-        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=60",
-        description: "Naturally fermented sourdough bread made from 100% whole wheat. Crusty exterior with soft, airy crumbs.",
-        specs: { Origin: "Local Bakery", "Shelf Life": "3 Days", Nutritional: "220 kcal, 8g Protein" }
+        id: 17,
+        name: "Organic Tattva Tur/Arhar Dal",
+        brand: "Organic Tattva",
+        category: "staples",
+        quantity: "1kg Pack",
+        price: 165,
+        mrp: 199,
+        discount: "17% OFF",
+        eta: "10 MINS",
+        image: "https://images.unsplash.com/photo-1547058881-aa0edd92aab3?w=400&auto=format&fit=crop&q=60",
+        description: "Unpolished organic yellow pigeon peas. Grown without chemical pesticides, loaded with plant proteins.",
+        specs: { Origin: "India", "Shelf Life": "6 Months", Nutritional: "343 kcal, 22g Protein" }
       },
       {
-        id: 7,
-        name: "Kettle Cooked Potato Chips (Sea Salt)",
-        brand: "The Green Snack Co",
+        id: 18,
+        name: "Organic Tattva Split Moong Dal",
+        brand: "Organic Tattva",
+        category: "staples",
+        quantity: "1kg Pack",
+        price: 145,
+        mrp: 175,
+        discount: "17% OFF",
+        eta: "10 MINS",
+        image: "https://images.unsplash.com/photo-1585996388914-fa265a7e1742?w=400&auto=format&fit=crop&q=60",
+        description: "High-quality split moong dal with skin. Easy to digest and rich in dietary fibers.",
+        specs: { Origin: "India", "Shelf Life": "6 Months", Nutritional: "348 kcal, 24g Protein" }
+      },
+      {
+        id: 19,
+        name: "Tata Tea Premium",
+        brand: "Tata Tea",
+        category: "beverages",
+        quantity: "1kg Pack",
+        price: 349,
+        mrp: 420,
+        discount: "16% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&auto=format&fit=crop&q=60",
+        description: "Unique blend of fine CTC tea grains and large leaves sourced from Assam. Robust flavor and rich color.",
+        specs: { Origin: "India (Assam)", "Shelf Life": "12 Months", Nutritional: "Contains tea antioxidants" }
+      },
+      {
+        id: 20,
+        name: "Nescafe Classic Instant Coffee",
+        brand: "Nescafe",
+        category: "beverages",
+        quantity: "100g Jar",
+        price: 299,
+        mrp: 340,
+        discount: "12% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&auto=format&fit=crop&q=60",
+        description: "100% pure instant coffee powder made from handpicked Arabica and Robusta beans. Rich aroma.",
+        specs: { Origin: "India (Karnataka)", "Shelf Life": "18 Months", Nutritional: "Caffeine rich" }
+      },
+      {
+        id: 21,
+        name: "Parle-G Gold Biscuits Pack",
+        brand: "Parle",
         category: "munchies",
-        quantity: "135g Pack",
-        price: 75,
-        mrp: 99,
-        discount: "24% OFF",
+        quantity: "1kg Mega Pack",
+        price: 110,
+        mrp: 120,
+        discount: "8% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1558961312-503453e08a3b?w=400&auto=format&fit=crop&q=60",
+        description: "The classic Indian glucose biscuits. Enriched with wheat and milk solids, ideal with tea.",
+        specs: { Origin: "India", "Shelf Life": "6 Months", Nutritional: "450 kcal/100g" }
+      },
+      {
+        id: 22,
+        name: "Lays Spanish Tomato Tango Chips",
+        brand: "Lays",
+        category: "munchies",
+        quantity: "50g Pack",
+        price: 20,
+        mrp: 20,
+        discount: "0% OFF",
         eta: "8 MINS",
         image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=60",
-        description: "Thick-cut kettle cooked potato chips seasoned with fine Mediterranean sea salt. Trans-fat free.",
-        specs: { Origin: "India", "Shelf Life": "6 Months", Nutritional: "150 kcal, 8g Fat" }
+        description: "Crunchy potato chips flavored with tangy Spanish tomatoes and rich spices.",
+        specs: { Origin: "India", "Shelf Life": "4 Months", Nutritional: "150 kcal/30g" }
       },
       {
-        id: 8,
-        name: "Cold Brew Coffee (Bold Caramel)",
-        brand: "Sleepy Owl",
+        id: 23,
+        name: "Haldirams Bhujia Sev Namkeen",
+        brand: "Haldiram",
         category: "munchies",
-        quantity: "250ml Can",
+        quantity: "350g Pack",
         price: 99,
-        mrp: 125,
+        mrp: 110,
+        discount: "10% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=400&auto=format&fit=crop&q=60",
+        description: "Authentic crispy sev made from moth pulse flour and blend of spices. Perfect evening snack.",
+        specs: { Origin: "India (Rajasthan)", "Shelf Life": "6 Months", Nutritional: "590 kcal/100g" }
+      },
+      {
+        id: 24,
+        name: "Maggi 2-Min Masala Noodles",
+        brand: "Maggi",
+        category: "munchies",
+        quantity: "12-Pack Box",
+        price: 168,
+        mrp: 180,
+        discount: "6% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1612966608967-312ba599102e?w=400&auto=format&fit=crop&q=60",
+        description: "India's favorite instant masala noodles. Prepared with 10 signature roasted spices.",
+        specs: { Origin: "India", "Shelf Life": "9 Months", Nutritional: "380 kcal/Pack" }
+      },
+      {
+        id: 25,
+        name: "Kelloggs Corn Flakes",
+        brand: "Kellogg",
+        category: "munchies",
+        quantity: "875g Pack",
+        price: 290,
+        mrp: 330,
+        discount: "12% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=400&auto=format&fit=crop&q=60",
+        description: "Crunchy golden flakes of corn enriched with 8 essential vitamins and minerals. Perfect breakfast meal.",
+        specs: { Origin: "India", "Shelf Life": "9 Months", Nutritional: "378 kcal/100g" }
+      },
+      {
+        id: 26,
+        name: "Cadbury Dairy Milk Silk Chocolate",
+        brand: "Cadbury",
+        category: "sweet_tooth",
+        quantity: "150g Bar",
+        price: 160,
+        mrp: 175,
+        discount: "8% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1549007994-cb92ca817bc7?w=400&auto=format&fit=crop&q=60",
+        description: "Rich, smooth, and creamy milk chocolate bar. Soft, velvet texture that melts in the mouth.",
+        specs: { Origin: "India", "Shelf Life": "9 Months", Nutritional: "530 kcal/100g" }
+      },
+      {
+        id: 27,
+        name: "Kwality Walls Choco Chip Ice Cream",
+        brand: "Kwality Walls",
+        category: "sweet_tooth",
+        quantity: "700ml Tub",
+        price: 175,
+        mrp: 220,
         discount: "20% OFF",
         eta: "9 MINS",
-        image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&auto=format&fit=crop&q=60",
-        description: "100% Arabica coffee beans brewed slowly for 18 hours. Smooth, chocolatey body with sweet caramel finish.",
-        specs: { Origin: "India (Chikmagalur)", "Shelf Life": "9 Months", Nutritional: "45 kcal, 0g Sugar" }
+        image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&auto=format&fit=crop&q=60",
+        description: "Rich chocolate ice cream loaded with premium crunchy dark chocolate chips.",
+        specs: { Origin: "India", "Shelf Life": "12 Months", Nutritional: "135 kcal/serving" }
+      },
+      {
+        id: 28,
+        name: "Coca-Cola Original Soft Drink",
+        brand: "Coca-Cola",
+        category: "beverages",
+        quantity: "1.25L Bottle",
+        price: 65,
+        mrp: 70,
+        discount: "7% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=60",
+        description: "Original carbonated soft drink. Refreshing cola taste, ideal for parties and hot afternoons.",
+        specs: { Origin: "India", "Shelf Life": "6 Months", Nutritional: "44 kcal/100ml" }
+      },
+      {
+        id: 29,
+        name: "Real Activ 100% Mixed Fruit Juice",
+        brand: "Real",
+        category: "beverages",
+        quantity: "1 Litre Carton",
+        price: 115,
+        mrp: 130,
+        discount: "11% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=60",
+        description: "100% pure unsweetened fruit juice. Sourced from choice apples, oranges, pineapples, and passionfruits.",
+        specs: { Origin: "India", "Shelf Life": "9 Months", Nutritional: "48 kcal/100ml" }
+      },
+      {
+        id: 30,
+        name: "Bisleri Packaged Drinking Water",
+        brand: "Bisleri",
+        category: "beverages",
+        quantity: "5 Litre Can",
+        price: 70,
+        mrp: 75,
+        discount: "6% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1608889175123-8ec330b86f84?w=400&auto=format&fit=crop&q=60",
+        description: "Ozonated and mineral-enriched drinking water in a portable container for family use.",
+        specs: { Origin: "India", "Shelf Life": "24 Months", Nutritional: "TDS ~ 120 ppm" }
+      },
+      {
+        id: 31,
+        name: "Red Bull Energy Drink",
+        brand: "Red Bull",
+        category: "beverages",
+        quantity: "250ml Can",
+        price: 115,
+        mrp: 125,
+        discount: "8% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=400&auto=format&fit=crop&q=60",
+        description: "Functional energy drink formulated with high caffeine, taurine, and B-group vitamins.",
+        specs: { Origin: "Austria", "Shelf Life": "12 Months", Nutritional: "115 kcal/Can" }
+      },
+      {
+        id: 32,
+        name: "McCain Smiles Frozen Potato Snacks",
+        brand: "McCain",
+        category: "munchies",
+        quantity: "375g Pack",
+        price: 125,
+        mrp: 145,
+        discount: "13% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&auto=format&fit=crop&q=60",
+        description: "Delicious potato crisps in happy smile shapes. Quick bake or fry frozen snack.",
+        specs: { Origin: "India", "Shelf Life": "18 Months", Nutritional: "220 kcal/100g" }
+      },
+      {
+        id: 33,
+        name: "MTR Paneer Butter Masala Meal",
+        brand: "MTR",
+        category: "munchies",
+        quantity: "300g Pack",
+        price: 110,
+        mrp: 130,
+        discount: "15% OFF",
+        eta: "10 MINS",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=60",
+        description: "Ready-to-eat rich paneer chunks in a creamy butter gravy. Just heat and consume.",
+        specs: { Origin: "India (Bengaluru)", "Shelf Life": "12 Months", Nutritional: "380 kcal/Pack" }
+      },
+      {
+        id: 34,
+        name: "Happilo California Almonds Dry Fruits",
+        brand: "Happilo",
+        category: "munchies",
+        quantity: "200g Pack",
+        price: 199,
+        mrp: 299,
+        discount: "33% OFF",
+        eta: "10 MINS",
+        image: "https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=400&auto=format&fit=crop&q=60",
+        description: "Raw, unsalted California almonds. High source of proteins, vitamin E, and dietary fiber.",
+        specs: { Origin: "USA", "Shelf Life": "9 Months", Nutritional: "620 kcal/100g" }
+      },
+      {
+        id: 35,
+        name: "Everest Garam Masala Powder Spices",
+        brand: "Everest",
+        category: "staples",
+        quantity: "100g Pack",
+        price: 76,
+        mrp: 82,
+        discount: "7% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&auto=format&fit=crop&q=60",
+        description: "Authentic roasted spice blend (cardamom, cinnamon, cloves, pepper) for flavoring Indian curries.",
+        specs: { Origin: "India", "Shelf Life": "12 Months", Nutritional: "Spices concentrate" }
+      },
+      {
+        id: 36,
+        name: "L'Oreal Total Repair 5 Shampoo",
+        brand: "L'Oreal",
+        category: "cleaning_personal",
+        quantity: "340ml Bottle",
+        price: 245,
+        mrp: 299,
+        discount: "18% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&auto=format&fit=crop&q=60",
+        description: "Helps fight the five signs of hair damage (hairfall, dryness, roughness, dullness, split ends).",
+        specs: { Origin: "India", "Shelf Life": "36 Months", Type: "Total Repair" }
+      },
+      {
+        id: 37,
+        name: "Dettol Germ Protection Soap Bar",
+        brand: "Dettol",
+        category: "cleaning_personal",
+        quantity: "125g (Buy 3 Get 1 Free)",
+        price: 145,
+        mrp: 175,
+        discount: "17% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1607006342411-b013522e276f?w=400&auto=format&fit=crop&q=60",
+        description: "Ensures 100% protection from germs and bacteria. Active pH balanced formula.",
+        specs: { Origin: "India", "Shelf Life": "24 Months", Fragrance: "Original Pine" }
+      },
+      {
+        id: 38,
+        name: "Colgate MaxFresh Gel Toothpaste",
+        brand: "Colgate",
+        category: "cleaning_personal",
+        quantity: "150g Tube",
+        price: 99,
+        mrp: 115,
+        discount: "13% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=60",
+        description: "Enriched with cooling crystals that dissolve while brushing for maximum fresh breath.",
+        specs: { Origin: "India", "Shelf Life": "36 Months", Flavor: "Spicy Fresh" }
+      },
+      {
+        id: 39,
+        name: "Himalaya Purifying Neem Face Wash",
+        brand: "Himalaya",
+        category: "cleaning_personal",
+        quantity: "150ml Tube",
+        price: 175,
+        mrp: 199,
+        discount: "12% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&auto=format&fit=crop&q=60",
+        description: "Soap-free herbal face wash that cleanses skin oils and prevents acne with neem and turmeric.",
+        specs: { Origin: "India", "Shelf Life": "36 Months", SkinType: "Acne Prone" }
+      },
+      {
+        id: 40,
+        name: "Nivea Men Protect Roll-On Deodorant",
+        brand: "Nivea",
+        category: "cleaning_personal",
+        quantity: "50ml Rollon",
+        price: 165,
+        mrp: 199,
+        discount: "17% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&auto=format&fit=crop&q=60",
+        description: "Deodorant with 48h sweat protection and skin-friendly care of Nivea Men cream.",
+        specs: { Origin: "India", "Shelf Life": "30 Months", Alcohol: "0% Alcohol" }
+      },
+      {
+        id: 41,
+        name: "Whisper Choice Ultra Sanitary Pads",
+        brand: "Whisper",
+        category: "cleaning_personal",
+        quantity: "20 pads Pack",
+        price: 145,
+        mrp: 160,
+        discount: "9% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1579684389782-64d84b5e901a?w=400&auto=format&fit=crop&q=60",
+        description: "Wings sanitary napkins with magic gel lock system for dry comfort and zero leakage.",
+        specs: { Origin: "India", "Shelf Life": "36 Months", Size: "XL Pads" }
+      },
+      {
+        id: 42,
+        name: "Pampers Active Baby Diaper Pants",
+        brand: "Pampers",
+        category: "baby_pet",
+        quantity: "32 pcs Pack",
+        price: 499,
+        mrp: 599,
+        discount: "16% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&auto=format&fit=crop&q=60",
+        description: "Ultra dry diaper pants with double leak guard barriers and wetness indicator strips.",
+        specs: { Origin: "India", "Shelf Life": "36 Months", Size: "Medium (M)" }
+      },
+      {
+        id: 43,
+        name: "Surf Excel Easy Wash Detergent",
+        brand: "Surf Excel",
+        category: "cleaning_personal",
+        quantity: "1kg Pack",
+        price: 135,
+        mrp: 150,
+        discount: "10% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1584824486509-112e4181ff6b?w=400&auto=format&fit=crop&q=60",
+        description: "Removes tough stains like grease, ink, curry, and chocolate from fabric instantly.",
+        specs: { Origin: "India", "Shelf Life": "24 Months", Type: "Washing Powder" }
+      },
+      {
+        id: 44,
+        name: "Vim Lemon Dishwash Liquid Gel",
+        brand: "Vim",
+        category: "cleaning_personal",
+        quantity: "500ml Bottle",
+        price: 99,
+        mrp: 110,
+        discount: "10% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=400&auto=format&fit=crop&q=60",
+        description: "Dishwashing liquid with real lemon power. Leaves zero grease scratches and sparkling clean dishes.",
+        specs: { Origin: "India", "Shelf Life": "24 Months", Fragrance: "Lemon Active" }
+      },
+      {
+        id: 45,
+        name: "Lizol Floor Cleaner Citrus",
+        brand: "Lizol",
+        category: "cleaning_personal",
+        quantity: "1 Litre Bottle",
+        price: 195,
+        mrp: 215,
+        discount: "9% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop&q=60",
+        description: "Kills 99.9% germs on floors and hard surfaces. Powerful citrus odor controller.",
+        specs: { Origin: "India", "Shelf Life": "24 Months", Type: "Disinfectant" }
+      },
+      {
+        id: 46,
+        name: "Harpic Blue Toilet Cleaner Liquid",
+        brand: "Harpic",
+        category: "cleaning_personal",
+        quantity: "1 Litre Bottle",
+        price: 185,
+        mrp: 199,
+        discount: "7% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400&auto=format&fit=crop&q=60",
+        description: "Thick disinfectant liquid that clings to surfaces, removing scale, stains, and odor.",
+        specs: { Origin: "India", "Shelf Life": "24 Months", Type: "Sanitary Cleaner" }
+      },
+      {
+        id: 47,
+        name: "Shalimar Garbage Bags Medium",
+        brand: "Shalimar",
+        category: "cleaning_personal",
+        quantity: "30 bags Roll",
+        price: 85,
+        mrp: 110,
+        discount: "22% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&auto=format&fit=crop&q=60",
+        description: "Oxo-biodegradable trash bags in a convenient roll. Strong load capacity and zero leak bottom.",
+        specs: { Origin: "India", "Shelf Life": "12 Months", Dimensions: "19 x 21 inches" }
+      },
+      {
+        id: 48,
+        name: "Origami Soft 2-Ply Tissues Box",
+        brand: "Origami",
+        category: "cleaning_personal",
+        quantity: "200 pulls Box",
+        price: 99,
+        mrp: 120,
+        discount: "17% OFF",
+        eta: "8 MINS",
+        image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&auto=format&fit=crop&q=60",
+        description: "Soft facial tissues made of 100% natural virgin fiber. Free of optical brighteners.",
+        specs: { Origin: "India", "Shelf Life": "Unlimited", Type: "Facial Tissues" }
+      },
+      {
+        id: 49,
+        name: "Pedigree Adult Dog Food Dry",
+        brand: "Pedigree",
+        category: "baby_pet",
+        quantity: "1.2kg Pack",
+        price: 349,
+        mrp: 390,
+        discount: "10% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400&auto=format&fit=crop&q=60",
+        description: "Balanced dry kibble dog food containing 20% crude protein, vitamins, and minerals.",
+        specs: { Origin: "India", "Shelf Life": "12 Months", Flavor: "Chicken & Veg" }
+      },
+      {
+        id: 50,
+        name: "Portronics Fast Charging Cable",
+        brand: "Portronics",
+        category: "electronics",
+        quantity: "1 pc (1.2m)",
+        price: 149,
+        mrp: 299,
+        discount: "50% OFF",
+        eta: "9 MINS",
+        image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400&auto=format&fit=crop&q=60",
+        description: "Heavy-duty nylon braided fast charging USB cable with smart indicator light.",
+        specs: { Origin: "China", "Shelf Life": "6 Months Warranty", Type: "Type-C Cable" }
       }
     ];
 
@@ -311,6 +900,22 @@
       const [selectedCategory, setSelectedCategory] = useState('all');
       const [searchQuery, setSearchQuery] = useState('');
       const [isSearchFocused, setIsSearchFocused] = useState(false);
+      const [isSearching, setIsSearching] = useState(false);
+      const [searchQueryDebounced, setSearchQueryDebounced] = useState('');
+
+      useEffect(() => {
+        if (searchQuery.trim() === '') {
+          setSearchQueryDebounced('');
+          setIsSearching(false);
+          return;
+        }
+        setIsSearching(true);
+        const timer = setTimeout(() => {
+          setSearchQueryDebounced(searchQuery);
+          setIsSearching(false);
+        }, 300); // 300ms medium speed simulated scanner latency
+        return () => clearTimeout(timer);
+      }, [searchQuery]);
       
       // Database & overrides
       const [catalog, setCatalog] = useState(PRODUCT_CATALOG);
@@ -346,11 +951,19 @@
         { id: 2, productName: "Hass Avocado (Imported)", targetPrice: 170, currentPrice: 189 }
       ]);
       const [orders, setOrders] = useState(() => {
-        const local = localStorage.getItem('shopwise_orders_brutalist');
-        return local ? JSON.parse(local) : [
-          { id: "SW-8812", date: "21 Jun 2026", itemsCount: 3, total: 372, savings: 84, status: "Delivered", eta: "Delivered" },
-          { id: "SW-5421", date: "16 Jun 2026", itemsCount: 1, total: 245, savings: 30, status: "Delivered", eta: "Delivered" }
-        ];
+        try {
+          const local = localStorage.getItem('shopwise_orders_brutalist');
+          return local ? JSON.parse(local) : [
+            { id: "SW-8812", date: "21 Jun 2026", itemsCount: 3, total: 372, savings: 84, status: "Delivered", eta: "Delivered" },
+            { id: "SW-5421", date: "16 Jun 2026", itemsCount: 1, total: 245, savings: 30, status: "Delivered", eta: "Delivered" }
+          ];
+        } catch (e) {
+          console.error("Failed to parse orders from localStorage:", e);
+          return [
+            { id: "SW-8812", date: "21 Jun 2026", itemsCount: 3, total: 372, savings: 84, status: "Delivered", eta: "Delivered" },
+            { id: "SW-5421", date: "16 Jun 2026", itemsCount: 1, total: 245, savings: 30, status: "Delivered", eta: "Delivered" }
+          ];
+        }
       });
 
       useEffect(() => {
@@ -503,21 +1116,21 @@
         if (selectedCategory !== 'all') {
           result = result.filter(p => p.category === selectedCategory);
         }
-        if (searchQuery.trim() !== '') {
+        if (searchQueryDebounced.trim() !== '') {
           result = result.filter(p => 
-            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            p.brand.toLowerCase().includes(searchQuery.toLowerCase())
+            p.name.toLowerCase().includes(searchQueryDebounced.toLowerCase()) ||
+            p.brand.toLowerCase().includes(searchQueryDebounced.toLowerCase())
           );
         }
         return result;
-      }, [catalog, selectedCategory, searchQuery]);
+      }, [catalog, selectedCategory, searchQueryDebounced]);
 
       const searchSuggestions = useMemo(() => {
-        if (searchQuery.trim() === '') return [];
+        if (searchQueryDebounced.trim() === '') return [];
         return catalog.filter(p => 
-          p.name.toLowerCase().includes(searchQuery.toLowerCase())
+          p.name.toLowerCase().includes(searchQueryDebounced.toLowerCase())
         ).slice(0, 5);
-      }, [catalog, searchQuery]);
+      }, [catalog, searchQueryDebounced]);
 
       return (
         <div className="min-h-screen bg-cream flex flex-col items-center">
@@ -696,6 +1309,7 @@
                   cart={cart}
                   setSelectedProduct={setSelectedProduct}
                   setCompareProduct={setCompareProduct}
+                  isSearching={isSearching}
                 />
               </div>
             )}
@@ -810,7 +1424,7 @@
                 <span className="text-[10px] font-black uppercase">Home</span>
               </button>
               <button 
-                onClick={() => { setView('app-home'); setSelectedCategory('dairy'); }}
+                onClick={() => { setView('app-home'); setSelectedCategory('dairy_bread'); }}
                 className={`flex flex-col items-center gap-1 flex-1 py-1 ${view === 'app-home' && selectedCategory !== 'all' ? 'text-peach' : 'text-gray-500'}`}
               >
                 <Icons.Tag className="w-5.5 h-5.5" />
@@ -1327,25 +1941,31 @@
     function AppHomeView({ 
       filteredProducts, selectedCategory, setSelectedCategory, 
       handleAddToCart, handleRemoveFromCart, wishlist, handleToggleWishlist, 
-      cart, setSelectedProduct, setCompareProduct 
+      cart, setSelectedProduct, setCompareProduct, isSearching 
     }) {
       
       const categories = [
-        { id: 'all', label: 'All Fresh', icon: '🛒' },
-        { id: 'fruits', label: 'Fruits & Veg', icon: '🥕' },
-        { id: 'dairy', label: 'Dairy & Bread', icon: '🥛' },
-        { id: 'munchies', label: 'Snacks & Drinks', icon: '🥤' },
-        { id: 'household', label: 'Household', icon: '🧼' }
+        { id: 'all', label: 'All Items', icon: '⚡' },
+        { id: 'fruits_veg', label: 'Fruits & Veg', icon: '🥕' },
+        { id: 'dairy_bread', label: 'Dairy & Bread', icon: '🥛' },
+        { id: 'munchies', label: 'Munchies', icon: '🍿' },
+        { id: 'beverages', label: 'Beverages', icon: '🥤' },
+        { id: 'staples', label: 'Atta, Rice & Dal', icon: '🌾' },
+        { id: 'spices_sauces', label: 'Masalas & Sauces', icon: '🌶️' },
+        { id: 'sweet_tooth', label: 'Sweet Tooth', icon: '🍫' },
+        { id: 'cleaning_personal', label: 'Cleaning & Care', icon: '🧼' },
+        { id: 'baby_pet', label: 'Baby & Pet', icon: '🍼' },
+        { id: 'electronics', label: 'Electronics', icon: '🔌' }
       ];
 
       return (
-        <div className="space-y-8">
+        <div className="space-y-8 w-full">
           
           {/* Brutalist Heading Panel */}
-          <div className="w-full rounded-3xl bg-peach border-4 border-charcoal p-6 md:p-10 relative overflow-hidden flex flex-col justify-center min-h-[160px] shadow-brutalist">
+          <div className="w-full rounded-3xl bg-peach border-4 border-charcoal p-6 md:p-10 relative overflow-hidden flex flex-col justify-center min-h-[160px] shadow-brutalist animate-fade-in">
             <div className="relative z-10 space-y-3 text-left">
               <span className="bg-charcoal text-peach text-[9px] font-black px-2.5 py-1 rounded-md uppercase border border-charcoal">
-                Mumbai express delivery
+                India express delivery
               </span>
               <h2 className="text-4xl md:text-5xl font-black text-white uppercase leading-none drop-shadow-[2px_2px_0_#0A0A0A]">
                 What do you need today?
@@ -1356,63 +1976,110 @@
             </div>
           </div>
 
-          {/* Category Chips Scroll */}
-          <div className="space-y-3">
-            <h3 className="text-base font-black uppercase text-charcoal flex items-center gap-1.5">
-              <Icons.Tag className="w-5.5 h-5.5 text-peach" />
-              Product Categories
-            </h3>
-            <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 md:mx-0 md:px-0">
-              {categories.map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-tight transition-all border-2 border-charcoal whitespace-nowrap ${
-                    selectedCategory === cat.id 
-                      ? 'bg-charcoal text-white shadow-brutalist-sm translate-y-[2px]' 
-                      : 'bg-white text-charcoal hover:bg-cream shadow-brutalist-sm hover:translate-y-[-1px]'
-                  }`}
-                >
-                  <span>{cat.icon}</span>
-                  <span>{cat.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Grid Products listings */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b-2 border-charcoal pb-2">
-              <h3 className="text-lg font-black uppercase text-charcoal">
-                {selectedCategory === 'all' ? 'All Catalog items' : `${selectedCategory} catalog`}
-              </h3>
-              <span className="text-xs font-semibold text-gray-500 uppercase">
-                {filteredProducts.length} Products
-              </span>
-            </div>
-
-            {filteredProducts.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-3xl border-4 border-charcoal shadow-brutalist">
-                <Icons.AlertCircle className="w-12 h-12 text-gray-300 mx-auto" />
-                <p className="text-gray-500 font-black mt-3 text-xs uppercase">No items found matching your filters</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {filteredProducts.map(p => (
-                  <ProductCard 
-                    key={p.id}
-                    product={p}
-                    handleAddToCart={handleAddToCart}
-                    handleRemoveFromCart={handleRemoveFromCart}
-                    isWishlisted={wishlist.includes(p.id)}
-                    handleToggleWishlist={handleToggleWishlist}
-                    quantityInCart={cart.find(item => item.product.id === p.id)?.quantity || 0}
-                    setSelectedProduct={setSelectedProduct}
-                    setCompareProduct={setCompareProduct}
-                  />
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            
+            {/* Sidebar Categories (Desktop) - Blinkit style */}
+            <aside className="hidden md:block w-64 shrink-0 sticky top-24 bg-white border-4 border-charcoal rounded-3xl p-4 shadow-brutalist space-y-2 text-left">
+              <h3 className="text-xs font-black uppercase text-gray-400 tracking-wider px-2 mb-3">Categories</h3>
+              <div className="flex flex-col gap-1.5 max-h-[70vh] overflow-y-auto pr-1">
+                {categories.map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-tight transition-all border-2 border-charcoal text-left ${
+                      selectedCategory === cat.id 
+                        ? 'bg-charcoal text-white border-charcoal shadow-brutalist-sm translate-x-1' 
+                        : 'bg-white text-charcoal hover:bg-cream border-charcoal shadow-brutalist-hover hover:translate-y-[-1px]'
+                    }`}
+                  >
+                    <span className="text-base">{cat.icon}</span>
+                    <span>{cat.label}</span>
+                  </button>
                 ))}
               </div>
-            )}
+            </aside>
+
+            {/* Main Content Area */}
+            <div className="flex-1 w-full space-y-6">
+              
+              {/* Mobile Category Chips Scroll */}
+              <div className="block md:hidden space-y-3 text-left">
+                <h3 className="text-sm font-black uppercase text-charcoal flex items-center gap-1.5">
+                  <Icons.Tag className="w-5 h-5 text-peach" />
+                  Product Categories
+                </h3>
+                <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4">
+                  {categories.map(cat => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black uppercase tracking-tight transition-all border-2 border-charcoal whitespace-nowrap ${
+                        selectedCategory === cat.id 
+                          ? 'bg-charcoal text-white shadow-brutalist-sm translate-y-[1px]' 
+                          : 'bg-white text-charcoal hover:bg-cream border-charcoal shadow-brutalist-sm'
+                      }`}
+                    >
+                      <span>{cat.icon}</span>
+                      <span>{cat.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Grid Products listings */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b-2 border-charcoal pb-2 text-left">
+                  <h3 className="text-lg font-black uppercase text-charcoal">
+                    {selectedCategory === 'all' ? 'All Catalog Items' : `${categories.find(c => c.id === selectedCategory)?.label} Catalog`}
+                  </h3>
+                  <span className="text-xs font-semibold text-gray-500 uppercase">
+                    {filteredProducts.length} Products
+                  </span>
+                </div>
+
+                {isSearching ? (
+                  // Grid of skeleton loaders
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[...Array(6)].map((_, idx) => (
+                      <div key={idx} className="bg-white rounded-3xl border-4 border-charcoal p-3 flex flex-col justify-between aspect-[1/1.6] shadow-brutalist-sm animate-pulse">
+                        <div className="w-full aspect-square rounded-2xl bg-gray-200 border-2 border-charcoal mb-3"></div>
+                        <div className="space-y-2 flex-1">
+                          <div className="h-3 w-12 bg-gray-200 rounded"></div>
+                          <div className="h-4 w-3/4 bg-gray-200 rounded"></div>
+                          <div className="h-3 w-1/2 bg-gray-200 rounded"></div>
+                        </div>
+                        <div className="flex items-center justify-between mt-3 pt-3 border-t-2 border-charcoal">
+                          <div className="h-6 w-12 bg-gray-200 rounded"></div>
+                          <div className="h-8 w-16 bg-gray-200 rounded"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : filteredProducts.length === 0 ? (
+                  <div className="text-center py-16 bg-white rounded-3xl border-4 border-charcoal shadow-brutalist">
+                    <Icons.AlertCircle className="w-12 h-12 text-gray-300 mx-auto" />
+                    <p className="text-gray-500 font-black mt-3 text-xs uppercase">No items found matching your filters</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredProducts.map(p => (
+                      <ProductCard 
+                        key={p.id}
+                        product={p}
+                        handleAddToCart={handleAddToCart}
+                        handleRemoveFromCart={handleRemoveFromCart}
+                        isWishlisted={wishlist.includes(p.id)}
+                        handleToggleWishlist={handleToggleWishlist}
+                        quantityInCart={cart.find(item => item.product.id === p.id)?.quantity || 0}
+                        setSelectedProduct={setSelectedProduct}
+                        setCompareProduct={setCompareProduct}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
           </div>
 
         </div>
@@ -1792,6 +2459,16 @@
     }) {
       const isCartEmpty = cart.length === 0;
       const currentDetails = cartCalculations[cartStrategy];
+      const [isSplitting, setIsSplitting] = useState(false);
+
+      const changeStrategy = (strategy) => {
+        if (strategy === cartStrategy) return;
+        setIsSplitting(true);
+        setCartStrategy(strategy);
+        setTimeout(() => {
+          setIsSplitting(false);
+        }, 500); // 500ms mock comparison calculations
+      };
 
       const checkoutSelectedCart = () => {
         if (isCartEmpty) return;
@@ -1813,7 +2490,7 @@
                   <Icons.ShoppingCart className="w-5 h-5 text-peach fill-peach" />
                   Smart Cart
                 </h3>
-                <p className="text-[10px] text-gray-500 font-semibold uppercase">Mumbai live pricing scanner active</p>
+                <p className="text-[10px] text-gray-500 font-semibold uppercase">India live pricing scanner active</p>
               </div>
               <div className="flex items-center gap-2">
                 {!isCartEmpty && (
@@ -1834,14 +2511,28 @@
                 </div>
                 <div>
                   <p className="font-black uppercase text-charcoal">Your cart is empty</p>
-                  <p className="text-xs text-gray-400 font-semibold mt-1 max-w-xs mx-auto">Add items to configure live grocery scanner splits in Mumbai.</p>
+                  <p className="text-xs text-gray-400 font-semibold mt-1 max-w-xs mx-auto">Add items to configure live grocery scanner splits in India.</p>
                 </div>
                 <button onClick={onClose} className="px-5 py-2.5 bg-peach hover:bg-peachHover text-white rounded-xl text-xs font-black border-2 border-charcoal shadow-brutalist">
                   Start Shopping
                 </button>
               </div>
             ) : (
-              <div className="flex-1 flex flex-col overflow-hidden">
+              <div className="flex-1 flex flex-col overflow-hidden relative">
+                
+                {/* AI SPLITTING LOADER OVERLAY */}
+                {isSplitting && (
+                  <div className="absolute inset-0 bg-white/95 z-30 flex flex-col items-center justify-center p-6 text-center space-y-4 animate-fade-in">
+                    <div className="relative w-16 h-16 flex items-center justify-center">
+                      <div className="absolute inset-0 rounded-full border-4 border-dashed border-peach animate-spin"></div>
+                      <Icons.Sparkles className="w-7 h-7 text-peach fill-peach animate-pulse" />
+                    </div>
+                    <div>
+                      <p className="font-black uppercase text-charcoal text-xs">AI Cart Splitting...</p>
+                      <p className="text-[9px] text-gray-400 font-bold uppercase mt-1">Comparing 2,400+ delivery routes in India</p>
+                    </div>
+                  </div>
+                )}
                 
                 {/* AI STRATEGY TABS */}
                 <div className="bg-cream p-3.5 border-b-2 border-charcoal">
@@ -1851,7 +2542,7 @@
                   
                   <div className="grid grid-cols-3 gap-2 bg-white p-1.5 rounded-2xl border-2 border-charcoal">
                     <button
-                      onClick={() => setCartStrategy('balanced')}
+                      onClick={() => changeStrategy('balanced')}
                       className={`py-2 rounded-xl text-xs font-black flex flex-col items-center border transition-all ${
                         cartStrategy === 'balanced' 
                           ? 'bg-sage text-white border-charcoal shadow-brutalist-sm translate-y-[1px]' 
@@ -1861,9 +2552,9 @@
                       <span>Balanced</span>
                       <span className="text-[9px] font-black opacity-90">₹{cartCalculations.balanced?.totalPrice}</span>
                     </button>
-
+ 
                     <button
-                      onClick={() => setCartStrategy('cheapest')}
+                      onClick={() => changeStrategy('cheapest')}
                       className={`py-2 rounded-xl text-xs font-black flex flex-col items-center border transition-all ${
                         cartStrategy === 'cheapest' 
                           ? 'bg-peach text-white border-charcoal shadow-brutalist-sm translate-y-[1px]' 
@@ -1873,9 +2564,9 @@
                       <span>Cheapest</span>
                       <span className="text-[9px] font-black opacity-90">₹{cartCalculations.cheapest?.totalPrice}</span>
                     </button>
-
+ 
                     <button
-                      onClick={() => setCartStrategy('fastest')}
+                      onClick={() => changeStrategy('fastest')}
                       className={`py-2 rounded-xl text-xs font-black flex flex-col items-center border transition-all ${
                         cartStrategy === 'fastest' 
                           ? 'bg-plum text-white border-charcoal shadow-brutalist-sm translate-y-[1px]' 
@@ -1988,6 +2679,8 @@
       const [addressId, setAddressId] = useState(addresses[0]?.id || 1);
       const [paymentMethod, setPaymentMethod] = useState('card');
       const [isProcessing, setIsProcessing] = useState(false);
+      const [isSuccess, setIsSuccess] = useState(false);
+      const [successDetails, setSuccessDetails] = useState(null);
       
       const billingTotal = currentCartSummary ? currentCartSummary.totalPrice + currentCartSummary.shippingFee : 0;
       const savingsAmt = currentCartSummary ? currentCartSummary.saving : 0;
@@ -1998,8 +2691,23 @@
         
         setTimeout(() => {
           setIsProcessing(false);
+          const orderId = `SW-${Math.floor(1000 + Math.random() * 9000)}`;
+          const addressObj = addresses.find(a => a.id === addressId);
+          const addressText = addressObj ? `${addressObj.label}: ${addressObj.text}` : "Deliver across India";
+          
+          const details = {
+            id: orderId,
+            strategy: cartStrategy,
+            totalPrice: billingTotal,
+            savings: savingsAmt,
+            eta: currentCartSummary.eta,
+            itemsCount: cart.length,
+            address: addressText,
+            payment: paymentMethod === 'card' ? 'Credit Card' : paymentMethod === 'upi' ? 'UPI / Wallet' : 'Cash on Delivery'
+          };
+
           const newOrder = {
-            id: `SW-${Math.floor(1000 + Math.random() * 9000)}`,
+            id: orderId,
             date: "Today",
             itemsCount: cart.length,
             total: billingTotal,
@@ -2010,11 +2718,85 @@
           
           setOrders(prev => [newOrder, ...prev]);
           setLifetimeSavings(prev => prev + savingsAmt);
+          setSuccessDetails(details);
+          setIsSuccess(true);
           setCart([]);
           showNotification("Order placed successfully with ShopWise AI!");
-          setView('app-dashboard');
         }, 1800);
       };
+
+      if (isSuccess && successDetails) {
+        return (
+          <div className="max-w-2xl mx-auto py-8 text-center animate-fade-in space-y-8">
+            <div className="bg-white p-8 rounded-[36px] border-4 border-charcoal shadow-brutalist relative overflow-hidden">
+              
+              {/* Brutalist Confetti Graphic Background Elements */}
+              <div className="absolute top-4 left-4 text-peach text-2xl animate-bounce">🎉</div>
+              <div className="absolute top-12 right-6 text-sage text-2xl animate-pulse">✨</div>
+              <div className="absolute bottom-16 left-8 text-cream text-3xl font-black rotate-12 opacity-10">SAVED!</div>
+              <div className="absolute bottom-8 right-12 text-peach text-3xl font-black -rotate-12 opacity-10">SUCCESS</div>
+
+              <div className="w-20 h-20 bg-sage text-white rounded-full border-4 border-charcoal flex items-center justify-center mx-auto shadow-brutalist-sm hover:scale-110 transition-transform">
+                <Icons.Check className="w-10 h-10 stroke-[3]" />
+              </div>
+
+              <h2 className="text-4xl font-black text-charcoal uppercase tracking-tight mt-6">Order Placed!</h2>
+              <p className="text-xs text-gray-500 font-extrabold uppercase mt-1 tracking-wider">Your quick-commerce savings are locked in</p>
+
+              {/* SAVINGS CELEBRATION BADGE */}
+              <div className="bg-sage text-white border-4 border-charcoal rounded-2xl p-4 my-6 shadow-brutalist-sm relative rotate-[-1deg]">
+                <p className="text-[10px] font-black uppercase opacity-90 tracking-widest">ShopWise AI Optimization Benefit</p>
+                <p className="text-3xl font-black mt-1">Saved ₹{successDetails.savings}!</p>
+                <p className="text-xs font-semibold opacity-80 mt-1">
+                  Using optimized <strong className="uppercase">{successDetails.strategy}</strong> cart splitting strategy
+                </p>
+              </div>
+
+              {/* Order Info Table */}
+              <div className="border-2 border-charcoal bg-cream rounded-2xl p-5 text-left space-y-3 font-semibold text-xs text-charcoal">
+                <div className="flex justify-between border-b border-charcoal/10 pb-2">
+                  <span className="text-gray-400 font-bold uppercase">Order ID</span>
+                  <span className="font-black font-mono bg-white border border-charcoal px-2 py-0.5 rounded">{successDetails.id}</span>
+                </div>
+                <div className="flex justify-between border-b border-charcoal/10 pb-2">
+                  <span className="text-gray-400 font-bold uppercase">Estimated Delivery</span>
+                  <span className="font-black text-sage">⏱️ {successDetails.eta}</span>
+                </div>
+                <div className="flex justify-between border-b border-charcoal/10 pb-2">
+                  <span className="text-gray-400 font-bold uppercase">Payment Mode</span>
+                  <span className="font-black">{successDetails.payment}</span>
+                </div>
+                <div className="flex justify-between border-b border-charcoal/10 pb-2">
+                  <span className="text-gray-400 font-bold uppercase">Total Bill Paid</span>
+                  <span className="font-black text-lg">₹{successDetails.totalPrice}</span>
+                </div>
+                <div className="pt-1">
+                  <span className="text-gray-400 font-bold uppercase block mb-1">Delivering To</span>
+                  <p className="font-black text-[11px] leading-relaxed bg-white border border-charcoal p-2.5 rounded-lg">
+                    {successDetails.address}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mt-8">
+                <button
+                  onClick={() => setView('app-dashboard')}
+                  className="py-4 bg-cream hover:bg-cream/80 text-charcoal rounded-2xl text-xs font-black uppercase border-2 border-charcoal shadow-brutalist-sm hover:translate-y-[-1px] transition-all"
+                >
+                  Go To Dashboard
+                </button>
+                <button
+                  onClick={() => setView('app-home')}
+                  className="py-4 bg-peach hover:bg-peachHover text-white rounded-2xl text-xs font-black uppercase border-2 border-charcoal shadow-brutalist hover:translate-y-[-1px] transition-all"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+
+            </div>
+          </div>
+        );
+      }
 
       return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-left">
