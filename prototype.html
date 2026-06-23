@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HI BBU - Your Waffle</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #2a1711;
+      background: #fff4e6;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 68% 46%, rgba(255, 204, 112, 0.38), transparent 28%),
+        radial-gradient(circle at 18% 78%, rgba(137, 68, 34, 0.18), transparent 24%),
+        linear-gradient(135deg, #fff8ed 0%, #ffe5bd 48%, #f7be72 100%);
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      isolation: isolate;
+    }
+
+    #scene {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      cursor: grab;
+      touch-action: none;
+      z-index: 0;
+    }
+
+    #scene:active {
+      cursor: grabbing;
+    }
+
+    header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0;
+    }
+
+    .brand {
+      font-weight: 950;
+      letter-spacing: 0;
+      color: #3b1d13;
+    }
+
+    nav {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      color: #5b3323;
+      font-weight: 850;
+      font-size: 0.94rem;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .order-glow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 8px;
+      color: #fff9ef;
+      background: linear-gradient(135deg, #7b2d16, #d46a2c 54%, #ffb74d);
+      box-shadow:
+        0 0 18px rgba(255, 158, 64, 0.72),
+        0 0 42px rgba(123, 45, 22, 0.38),
+        inset 0 1px 0 rgba(255,255,255,0.38);
+      animation: glowPulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% {
+        box-shadow:
+          0 0 16px rgba(255, 158, 64, 0.64),
+          0 0 38px rgba(123, 45, 22, 0.32),
+          inset 0 1px 0 rgba(255,255,255,0.38);
+      }
+      50% {
+        box-shadow:
+          0 0 28px rgba(255, 199, 104, 0.95),
+          0 0 72px rgba(214, 106, 44, 0.48),
+          inset 0 1px 0 rgba(255,255,255,0.48);
+      }
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      width: min(620px, calc(100% - 32px));
+      margin: 12vh 0 0 clamp(16px, 7vw, 112px);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: #9b421e;
+      font-size: 0.82rem;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 620px;
+      font-size: clamp(2.4rem, 6.6vw, 6.1rem);
+      line-height: 0.96;
+      letter-spacing: 0;
+      color: #35180f;
+    }
+
+    .lead {
+      max-width: 460px;
+      margin: 22px 0 0;
+      color: #6b3a27;
+      font-size: clamp(1rem, 1.7vw, 1.16rem);
+      line-height: 1.7;
+    }
+
+    .cta-row {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      width: min(620px, calc(100% - 32px));
+      margin: 28px 0 0 clamp(16px, 7vw, 112px);
+    }
+
+    .cta-row a {
+      font-weight: 900;
+    }
+
+    .soft-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 16px;
+      border-radius: 8px;
+      color: #4b2418;
+      background: rgba(255, 249, 239, 0.66);
+      border: 1px solid rgba(75, 36, 24, 0.14);
+      backdrop-filter: blur(12px);
+    }
+
+    .hint {
+      position: fixed;
+      right: 24px;
+      bottom: 22px;
+      z-index: 2;
+      padding: 10px 12px;
+      border: 1px solid rgba(75, 36, 24, 0.14);
+      border-radius: 8px;
+      background: rgba(255, 249, 239, 0.72);
+      color: #6b3a27;
+      font-size: 0.86rem;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 46px rgba(88, 54, 31, 0.12);
+    }
+
+    @media (max-width: 760px) {
+      header {
+        align-items: flex-start;
+      }
+
+      nav {
+        gap: 10px;
+        font-size: 0.84rem;
+      }
+
+      .hero-copy {
+        margin-top: 7vh;
+      }
+
+      .hint {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <canvas id="scene" aria-label="Interactive 3D chocolate waffle"></canvas>
+    <header>
+      <div class="brand">BBU WAFFLE</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a class="order-glow" href="https://www.swiggy.com/city/kolkata/keventers-milkshakes-and-waffles-new-empire-cinema-rest435964?query=Waffle" target="_blank" rel="noopener">Order</a>
+      </nav>
+    </header>
+    <section class="hero-copy">
+      <p class="eyebrow">Chocolate loaded waffle</p>
+      <h1>HI BBU Here is your Waffle to my sweet sweet girlfriend</h1>
+      <p class="lead">A delicious animated 3D waffle stacked with glossy chocolate, golden pockets, cream swirls, and cozy warm light.</p>
+    </section>
+    <div class="cta-row">
+      <a class="order-glow" href="https://www.swiggy.com/city/kolkata/keventers-milkshakes-and-waffles-new-empire-cinema-rest435964?query=Waffle" target="_blank" rel="noopener">Order this waffle</a>
+      <a class="soft-button" href="jarvis.html">Replay animation</a>
+    </div>
+    <div class="hint">Hover the waffle to spin. Move your cursor for chocolatey depth.</div>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.164.1/build/three.module.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+
+    const canvas = document.getElementById("scene");
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance"
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.12;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 1.05, 8.4);
+
+    const group = new THREE.Group();
+    group.position.set(1.35, -0.12, 0);
+    group.rotation.y = -0.28;
+    scene.add(group);
+
+    const hemi = new THREE.HemisphereLight(0xfff4d7, 0x9b4d25, 2.7);
+    scene.add(hemi);
+
+    const key = new THREE.DirectionalLight(0xffedd0, 3.8);
+    key.position.set(-4.2, 5.8, 5.2);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    scene.add(key);
+
+    const rim = new THREE.PointLight(0xffb85a, 24, 12);
+    rim.position.set(3.8, 2.5, 3);
+    scene.add(rim);
+
+    const floor = new THREE.Mesh(
+      new THREE.CircleGeometry(5.1, 120),
+      new THREE.MeshStandardMaterial({
+        color: 0xf5d2a3,
+        roughness: 0.78
+      })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -1.82;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    const waffleMaterial = new THREE.MeshStandardMaterial({
+      color: 0xd9903d,
+      roughness: 0.56,
+      metalness: 0.02
+    });
+
+    const edgeMaterial = new THREE.MeshStandardMaterial({
+      color: 0x9d4f20,
+      roughness: 0.68,
+      metalness: 0.01
+    });
+
+    const chocolateMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x35170f,
+      roughness: 0.18,
+      metalness: 0.02,
+      clearcoat: 1,
+      clearcoatRoughness: 0.08
+    });
+
+    const creamMaterial = new THREE.MeshStandardMaterial({
+      color: 0xfff2d8,
+      roughness: 0.4
+    });
+
+    function roundedBox(width, height, depth, radius, smoothness) {
+      const shape = new THREE.Shape();
+      const x = -width / 2;
+      const y = -height / 2;
+      shape.moveTo(x + radius, y);
+      shape.lineTo(x + width - radius, y);
+      shape.quadraticCurveTo(x + width, y, x + width, y + radius);
+      shape.lineTo(x + width, y + height - radius);
+      shape.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      shape.lineTo(x + radius, y + height);
+      shape.quadraticCurveTo(x, y + height, x, y + height - radius);
+      shape.lineTo(x, y + radius);
+      shape.quadraticCurveTo(x, y, x + radius, y);
+      return new THREE.ExtrudeGeometry(shape, {
+        depth,
+        bevelEnabled: true,
+        bevelSegments: smoothness,
+        steps: 1,
+        bevelSize: radius * 0.42,
+        bevelThickness: radius * 0.38
+      }).center();
+    }
+
+    const waffle = new THREE.Mesh(
+      roundedBox(2.95, 2.55, 0.42, 0.22, 8),
+      waffleMaterial
+    );
+    waffle.rotation.x = -0.28;
+    waffle.castShadow = true;
+    waffle.receiveShadow = true;
+    group.add(waffle);
+
+    const edge = new THREE.Mesh(
+      roundedBox(3.08, 2.68, 0.18, 0.25, 8),
+      edgeMaterial
+    );
+    edge.position.z = -0.16;
+    edge.rotation.x = -0.28;
+    edge.castShadow = true;
+    group.add(edge);
+
+    const pocketMaterial = new THREE.MeshStandardMaterial({
+      color: 0xb86726,
+      roughness: 0.72
+    });
+
+    const pockets = [];
+    for (let row = 0; row < 4; row += 1) {
+      for (let col = 0; col < 5; col += 1) {
+        const pocket = new THREE.Mesh(
+          roundedBox(0.38, 0.38, 0.1, 0.08, 5),
+          pocketMaterial
+        );
+        pocket.position.set((col - 2) * 0.52, (row - 1.5) * 0.52, 0.26);
+        pocket.rotation.x = -0.28;
+        pocket.scale.z = 0.48;
+        pocket.castShadow = true;
+        pocket.receiveShadow = true;
+        pocket.userData.phase = Math.random() * Math.PI * 2;
+        pockets.push(pocket);
+        group.add(pocket);
+      }
+    }
+
+    function addChocolateDrizzle(points, radius) {
+      const curve = new THREE.CatmullRomCurve3(points);
+      const mesh = new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 72, radius, 18, false),
+        chocolateMaterial
+      );
+      mesh.castShadow = true;
+      group.add(mesh);
+      return mesh;
+    }
+
+    const drizzles = [
+      addChocolateDrizzle([
+        new THREE.Vector3(-1.26, 0.78, 0.56),
+        new THREE.Vector3(-0.66, 0.98, 0.62),
+        new THREE.Vector3(0.02, 0.68, 0.66),
+        new THREE.Vector3(0.72, 0.92, 0.62),
+        new THREE.Vector3(1.22, 0.62, 0.56)
+      ], 0.055),
+      addChocolateDrizzle([
+        new THREE.Vector3(-1.36, 0.05, 0.58),
+        new THREE.Vector3(-0.76, -0.2, 0.65),
+        new THREE.Vector3(-0.08, 0.08, 0.68),
+        new THREE.Vector3(0.58, -0.18, 0.64),
+        new THREE.Vector3(1.3, 0.12, 0.58)
+      ], 0.065),
+      addChocolateDrizzle([
+        new THREE.Vector3(-1.12, -0.78, 0.55),
+        new THREE.Vector3(-0.5, -0.52, 0.65),
+        new THREE.Vector3(0.16, -0.86, 0.66),
+        new THREE.Vector3(0.86, -0.56, 0.61)
+      ], 0.052)
+    ];
+
+    const chocolateDrops = [];
+    for (let i = 0; i < 14; i += 1) {
+      const drop = new THREE.Mesh(
+        new THREE.SphereGeometry(0.06 + Math.random() * 0.055, 24, 16),
+        chocolateMaterial
+      );
+      drop.scale.y = 0.45 + Math.random() * 0.35;
+      drop.position.set(-1.2 + Math.random() * 2.4, -1.0 + Math.random() * 1.9, 0.66 + Math.random() * 0.08);
+      drop.castShadow = true;
+      drop.userData.phase = Math.random() * Math.PI * 2;
+      chocolateDrops.push(drop);
+      group.add(drop);
+    }
+
+    const cream = new THREE.Group();
+    for (let i = 0; i < 6; i += 1) {
+      const swirl = new THREE.Mesh(
+        new THREE.TorusGeometry(0.18 + i * 0.035, 0.034, 12, 80),
+        creamMaterial
+      );
+      swirl.position.set(0.02, 1.05, 0.78 + i * 0.018);
+      swirl.rotation.x = Math.PI / 2;
+      swirl.rotation.z = i * 0.42;
+      cream.add(swirl);
+    }
+    const creamPeak = new THREE.Mesh(
+      new THREE.ConeGeometry(0.18, 0.38, 42),
+      creamMaterial
+    );
+    creamPeak.position.set(0.02, 1.05, 1.1);
+    creamPeak.rotation.x = -0.35;
+    cream.add(creamPeak);
+    cream.castShadow = true;
+    group.add(cream);
+
+    const heartMaterial = new THREE.MeshStandardMaterial({
+      color: 0xe63946,
+      roughness: 0.42,
+      metalness: 0.02
+    });
+
+    function makeHeart(x, y, z, scale) {
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 0.18);
+      shape.bezierCurveTo(-0.32, 0.46, -0.78, 0.12, -0.44, -0.32);
+      shape.bezierCurveTo(-0.2, -0.64, 0, -0.78, 0, -0.78);
+      shape.bezierCurveTo(0, -0.78, 0.2, -0.64, 0.44, -0.32);
+      shape.bezierCurveTo(0.78, 0.12, 0.32, 0.46, 0, 0.18);
+      const heart = new THREE.Mesh(
+        new THREE.ExtrudeGeometry(shape, {
+          depth: 0.06,
+          bevelEnabled: true,
+          bevelSize: 0.012,
+          bevelThickness: 0.012,
+          bevelSegments: 3
+        }).center(),
+        heartMaterial
+      );
+      heart.position.set(x, y, z);
+      heart.scale.setScalar(scale);
+      heart.castShadow = true;
+      group.add(heart);
+      return heart;
+    }
+
+    const hearts = [
+      makeHeart(-0.98, 1.05, 0.74, 0.22),
+      makeHeart(1.08, -0.84, 0.72, 0.18)
+    ];
+
+    const sparkleMaterial = new THREE.MeshBasicMaterial({
+      color: 0xfff2c4,
+      transparent: true,
+      opacity: 0.86
+    });
+    const sparkles = [];
+    for (let i = 0; i < 26; i += 1) {
+      const sparkle = new THREE.Mesh(new THREE.OctahedronGeometry(0.035 + Math.random() * 0.035), sparkleMaterial.clone());
+      sparkle.position.set(-1.8 + Math.random() * 3.6, -1.45 + Math.random() * 3.2, 0.8 + Math.random() * 0.9);
+      sparkle.userData.phase = Math.random() * Math.PI * 2;
+      sparkles.push(sparkle);
+      group.add(sparkle);
+    }
+
+    const shadow = new THREE.Mesh(
+      new THREE.CircleGeometry(1.9, 96),
+      new THREE.MeshBasicMaterial({
+        color: 0x5c2a16,
+        transparent: true,
+        opacity: 0.16,
+        depthWrite: false
+      })
+    );
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = -1.8;
+    shadow.position.z = 0.15;
+    scene.add(shadow);
+
+    const target = { x: 0, y: 0, hover: 0 };
+    const pointer = new THREE.Vector2();
+    const raycaster = new THREE.Raycaster();
+
+    function handlePointer(event) {
+      pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+      pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      target.x = pointer.x;
+      target.y = pointer.y;
+      raycaster.setFromCamera(pointer, camera);
+      target.hover = raycaster.intersectObjects(group.children, true).length ? 1 : 0;
+    }
+
+    window.addEventListener("pointermove", handlePointer);
+    window.addEventListener("pointerleave", () => {
+      target.x = 0;
+      target.y = 0;
+      target.hover = 0;
+    });
+
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    function animate(time) {
+      const t = time * 0.001;
+      const spinSpeed = THREE.MathUtils.lerp(0.16, 2.55, target.hover);
+      group.rotation.y += 0.012 * spinSpeed;
+      group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, target.y * 0.16 - 0.1, 0.055);
+      group.rotation.z = THREE.MathUtils.lerp(group.rotation.z, -target.x * 0.12, 0.055);
+      group.position.x = THREE.MathUtils.lerp(group.position.x, 1.35 + target.x * 0.34, 0.055);
+      group.position.y = THREE.MathUtils.lerp(group.position.y, -0.12 + target.y * 0.14, 0.055);
+
+      pockets.forEach((pocket) => {
+        pocket.position.z = 0.255 + Math.sin(t * 1.8 + pocket.userData.phase) * 0.008;
+      });
+
+      drizzles.forEach((drizzle, index) => {
+        drizzle.scale.setScalar(1 + Math.sin(t * 1.35 + index) * 0.01);
+      });
+
+      chocolateDrops.forEach((drop) => {
+        drop.position.z = 0.68 + Math.sin(t * 2.4 + drop.userData.phase) * 0.018;
+      });
+
+      cream.rotation.z = Math.sin(t * 1.15) * 0.08;
+      cream.position.z = Math.sin(t * 1.7) * 0.025;
+
+      hearts.forEach((heart, index) => {
+        heart.rotation.z = Math.sin(t * 1.7 + index) * 0.12;
+        heart.scale.setScalar((index ? 0.18 : 0.22) * (1 + Math.sin(t * 2 + index) * 0.06));
+      });
+
+      sparkles.forEach((sparkle, index) => {
+        sparkle.rotation.x += 0.012 + index * 0.0002;
+        sparkle.rotation.y += 0.018;
+        sparkle.material.opacity = 0.48 + Math.sin(t * 2.4 + sparkle.userData.phase) * 0.34;
+      });
+
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, target.x * 0.25, 0.04);
+      camera.position.y = THREE.MathUtils.lerp(camera.position.y, 1.05 + target.y * 0.12, 0.04);
+      camera.lookAt(0.55, -0.02, 0);
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
